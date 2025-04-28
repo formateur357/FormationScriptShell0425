@@ -1,0 +1,266 @@
+<h2
+id="instructions-dexécution-conditionnelle-en-shell-scripting">Instructions
+d’exécution conditionnelle en Shell Scripting</h2>
+<p>Les instructions conditionnelles permettent d’adapter le comportement
+d’un script selon différentes situations. Elles facilitent la prise de
+décision dans vos scripts en fonction des états du système, de la
+présence de fichiers, ou des valeurs de variables.</p>
+<h2 id="table-des-matières">Table des Matières</h2>
+<ul>
+<li><a
+href="#instructions-dexecution-conditionnelle-en-shell-scripting">Instructions
+d’exécution conditionnelle en Shell Scripting</a>
+<ul>
+<li><a href="#1-structure-if">1. Structure <code>if</code></a>
+<ul>
+<li><a href="#syntaxe-de-base">Syntaxe de base</a></li>
+<li><a href="#exemple-simple">Exemple simple</a></li>
+<li><a href="#utilisation-de-else">Utilisation de
+<code>else</code></a></li>
+<li><a href="#utilisation-de-elif">Utilisation de
+<code>elif</code></a></li>
+<li><a href="#niveaux-dimbrication">Niveaux d’imbrication</a></li>
+</ul></li>
+<li><a href="#2-structure-case">2. Structure <code>case</code></a>
+<ul>
+<li><a href="#syntaxe-de-base-1">Syntaxe de base</a></li>
+<li><a href="#exemple-interactif">Exemple interactif</a></li>
+<li><a href="#exemple-avec-expansion-de-motif">Exemple avec expansion de
+motif</a></li>
+</ul></li>
+<li><a href="#3-conseils-et-bonnes-pratiques">3. Conseils et Bonnes
+Pratiques</a></li>
+<li><a href="#4-autres-structures-conditionnelles">4. Autres Structures
+Conditionnelles</a>
+<ul>
+<li><a href="#la-commande">La commande <code>[[ ]]</code></a></li>
+<li><a href="#conditions-composees">Conditions Composées</a>
+<ul>
+<li><a href="#exemple-avec-et">Exemple avec &amp;&amp;</a></li>
+<li><a href="#exemple-avec-ou">Exemple avec ||</a></li>
+<li><a href="#exemple-avec-regroupement-et-doubles-crochets">Exemple
+avec regroupement et [[ ]]</a></li>
+</ul></li>
+<li><a href="#utilisation-de-a-et-o">Utilisation de -a et -o</a></li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="structure-if">1. Structure <code>if</code></h3>
+<p>La structure <code>if</code> teste une condition et exécute un bloc
+de commandes seulement si cette condition est vraie.</p>
+<h4 id="syntaxe-de-base">Syntaxe de base</h4>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> condition <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># commande(s) à exécuter si la condition est vraie</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h4 id="exemple-simple">Exemple simple</h4>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Vérifie si un fichier existe</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-e</span> <span class="st">&quot;mon_fichier.txt&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Le fichier existe.&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h4 id="utilisation-de-else">Utilisation de <code>else</code></h4>
+<p>Il est souvent utile de traiter le cas où la condition est
+fausse.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-e</span> <span class="st">&quot;mon_fichier.txt&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Le fichier existe.&quot;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Le fichier n&#39;existe pas.&quot;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h4 id="utilisation-de-elif">Utilisation de <code>elif</code></h4>
+<p>Pour tester plusieurs conditions en chaîne, on peut utiliser
+<code>elif</code>.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-e</span> <span class="st">&quot;fichier1.txt&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;fichier1.txt existe.&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> <span class="bu">[</span> <span class="ot">-e</span> <span class="st">&quot;fichier2.txt&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;fichier2.txt existe.&quot;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Aucun des fichiers n&#39;existe.&quot;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h4 id="niveaux-dimbrication">Niveaux d’imbrication</h4>
+<p>Les structures <code>if</code> peuvent être imbriquées pour traiter
+des cas plus complexes.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-e</span> <span class="st">&quot;config.txt&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Fichier de configuration trouvé.&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-s</span> <span class="st">&quot;config.txt&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Le fichier n&#39;est pas vide.&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Le fichier est vide.&quot;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Aucun fichier de configuration n&#39;a été trouvé.&quot;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="structure-case">2. Structure <code>case</code></h3>
+<p>La structure <code>case</code> offre une alternative plus lisible
+lorsque plusieurs valeurs d’une variable doivent être testées.</p>
+<h4 id="syntaxe-de-base-1">Syntaxe de base</h4>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> variable <span class="kw">in</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">motif1</span><span class="kw">)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># commandes si la variable correspond à motif1</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">;;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">motif2</span><span class="kw">)</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># commandes si la variable correspond à motif2</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">;;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="pp">*</span><span class="kw">)</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># commandes par défaut si aucun motif ne correspond</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">;;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<h4 id="exemple-interactif">Exemple interactif</h4>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-p</span> <span class="st">&quot;Entrez un jour de la semaine : &quot;</span> <span class="va">jour</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="va">$jour</span> <span class="kw">in</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">lundi</span><span class="kw">)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Début de la semaine.&quot;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">;;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="ss">vendredi</span><span class="kw">)</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Presque le week-end.&quot;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">;;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="ss">samedi</span><span class="kw">|</span><span class="ss">dimanche</span><span class="kw">)</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;C&#39;est le week-end !&quot;</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">;;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="pp">*</span><span class="kw">)</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Veuillez entrer un jour valide.&quot;</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">;;</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<h4 id="exemple-avec-expansion-de-motif">Exemple avec expansion de
+motif</h4>
+<p>Vous pouvez utiliser des jokers pour accepter plusieurs valeurs
+similaires :</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-p</span> <span class="st">&quot;Entrez une lettre (a, b, c) : &quot;</span> <span class="va">lettre</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="va">$lettre</span> <span class="kw">in</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">[aA]</span><span class="kw">)</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Vous avez choisi la lettre A.&quot;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">;;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="ss">[bB]</span><span class="kw">)</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Vous avez choisi la lettre B.&quot;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">;;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="ss">[cC]</span><span class="kw">)</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Vous avez choisi la lettre C.&quot;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">;;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="pp">*</span><span class="kw">)</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Lettre non reconnue.&quot;</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">;;</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<h3 id="conseils-et-bonnes-pratiques">3. Conseils et Bonnes
+Pratiques</h3>
+<ul>
+<li>Assurez-vous de bien espacer la syntaxe, notamment autour des
+crochets (par exemple <code>[ condition ]</code>).</li>
+<li>Utilisez des guillemets autour des variables pour éviter des
+problèmes avec les espaces ou caractères spéciaux (ex.
+<code>if [ "$variable" = "valeur" ]; then</code>).</li>
+<li>Privilégiez la clarté du code en commentant vos scripts et en
+structurant les conditions de façon logique.</li>
+<li>Testez toujours vos scripts dans un environnement de développement
+avant de les exécuter en production.</li>
+</ul>
+<h3 id="autres-structures-conditionnelles">4. Autres Structures
+Conditionnelles</h3>
+<h4 id="la-commande">La commande <code>[[ ]]</code></h4>
+<p>La commande <code>[[ ]]</code> est une extension du test conditionnel
+qui offre quelques avantages supplémentaires par rapport à
+<code>[ ]</code>.</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="st">&quot;</span><span class="va">$nom</span><span class="st">&quot;</span> <span class="ot">==</span> <span class="st">&quot;GitHub Copilot&quot;</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Bienvenue, GitHub Copilot !&quot;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Les doubles crochets ([[ ]]) offrent plusieurs avantages par rapport
+aux simples crochets ([ ]), notamment :</p>
+<ul>
+<li>Une syntaxe plus intuitive pour manipuler des expressions régulières
+et des conditions complexes.</li>
+<li>Une gestion améliorée de l’expansion de globbing et des espaces,
+réduisant ainsi les erreurs potentielles.</li>
+<li>Une meilleure sécurité lors des tests de chaînes en évitant les
+problèmes liés à l’absence ou aux espaces dans les variables.</li>
+</ul>
+<p>Par exemple, l’utilisation d’une expression régulière dans un test
+conditionnel devient très naturelle :</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="va">chaine</span><span class="op">=</span><span class="st">&quot;12345&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="va">$chaine</span> <span class="ot">=~</span> <span class="pp">^</span><span class="op">[</span><span class="ss">0</span><span class="op">-</span><span class="ss">9</span><span class="op">]</span><span class="pp">+</span><span class="op">$</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;La chaîne contient uniquement des chiffres.&quot;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Ces avantages rendent les doubles crochets particulièrement utiles
+pour écrire des scripts plus robustes et lisibles.</p>
+<h4 id="conditions-composées">Conditions Composées</h4>
+<p>Dans les scripts Shell, il est souvent nécessaire de tester plusieurs
+conditions dans une seule instruction. Pour cela, on peut combiner des
+tests en utilisant des opérateurs logiques :</p>
+<p>• L’opérateur &amp;&amp; (ET) : La commande située à droite est
+exécutée uniquement si celle de gauche réussit (renvoie 0).<br />
+• L’opérateur || (OU) : La commande située à droite est exécutée
+uniquement si celle de gauche échoue (renvoie une valeur non-nulle).</p>
+<p>Les opérateurs &amp;&amp; et || permettent de chaîner plusieurs tests
+de manière concise.</p>
+<p>Exemple avec &amp;&amp; :</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-e</span> <span class="st">&quot;script.sh&quot;</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="ot">-x</span> <span class="st">&quot;script.sh&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Le script existe et est exécutable.&quot;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Dans cet exemple, le script vérifie d’abord l’existence du fichier
+grâce à -e, puis son exécution grâce à -x. Le bloc de commandes ne
+s’exécute que si les deux conditions sont vraies.</p>
+<p>Exemple avec || :</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-e</span> <span class="st">&quot;script.sh&quot;</span> <span class="bu">]</span> <span class="kw">||</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-x</span> <span class="st">&quot;script.sh&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Le script n&#39;existe pas ou n&#39;est pas exécutable.&quot;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Ici, le test vérifie si le fichier n’existe pas (grâce à !) ou s’il
+n’est pas exécutable. Si l’une des conditions est vraie, le message
+s’affiche.</p>
+<p>Pour des conditions plus complexes, il convient parfois de regrouper
+les tests à l’aide de parenthèses. Attention : dans Bash, utilisez des
+parenthèses échappées ou la syntaxe [[ ]] pour éviter les erreurs de
+syntaxe :</p>
+<p>Exemple avec regroupement et [[ ]] :</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="op">(</span><span class="ot">-e</span> <span class="st">&quot;script.sh&quot;</span> <span class="kw">&amp;&amp;</span> <span class="ot">-x</span> <span class="st">&quot;script.sh&quot;</span><span class="op">)</span> <span class="kw">||</span> <span class="st">&quot;</span><span class="va">$force</span><span class="st">&quot;</span> <span class="ot">==</span> <span class="st">&quot;true&quot;</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Le script est valide ou le mode forcé est activé.&quot;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Ici, la condition teste si le fichier existe et est exécutable, ou si
+la variable force vaut “true”. L’utilisation de [[ ]] permet une syntaxe
+plus souple et évite certains pièges liés aux expansions de
+variables.</p>
+<p>Notez qu’il est également possible d’utiliser des opérateurs internes
+des crochets simples tels que -a (ET) et -o (OU), mais leur utilisation
+est moins recommandée à cause de leur ambiguïté et de problèmes
+potentiels de lisibilité :</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-e</span> <span class="st">&quot;script.sh&quot;</span> <span class="ot">-a</span> <span class="ot">-x</span> <span class="st">&quot;script.sh&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Le script existe et est exécutable.&quot;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Il est donc conseillé de privilégier les opérateurs &amp;&amp; et ||
+ou la syntaxe [[ ]] pour des scripts plus robustes et plus lisibles.</p>
+<p>```</p>

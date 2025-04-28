@@ -67,6 +67,7 @@ Exemple :
 
 ```bash code
 if [ -f "exemple.txt" ]; then
+if [[ -f "exemple."* ]]; then
     echo "exemple.txt est un fichier régulier."
 elif [ -d "exemple.txt" ]; then
     echo "exemple.txt est un répertoire."

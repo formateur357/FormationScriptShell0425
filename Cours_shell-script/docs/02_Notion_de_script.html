@@ -1,0 +1,318 @@
+<h1 id="cours-sur-les-scripts-shell">Cours sur les Scripts Shell</h1>
+<p>Ce cours présente les concepts fondamentaux d’un script shell, de son
+intérêt à ses différents composants et structures de commande.</p>
+<h1 id="table-des-matières">Table des matières</h1>
+<ol type="1">
+<li><a href="#cours-sur-les-scripts-shell">Cours sur les Scripts
+Shell</a></li>
+<li><a href="#interets-dun-script">Intérêts d’un script</a></li>
+<li><a href="#elements-dun-script">Éléments d’un script</a></li>
+<li><a href="#en-tete-et-choix-de-linterpreteur">En-tête et Choix de
+l’Interpréteur</a></li>
+<li><a href="#commentaires-et-bonnes-pratiques">Commentaires et Bonnes
+Pratiques</a></li>
+<li><a href="#affectations">Affectations</a></li>
+<li><a href="#definition-et-appels-de-fonctions">Définition et appels de
+fonctions</a></li>
+<li><a href="#commandes">Commandes</a></li>
+<li><a href="#structures-de-controle">Structures de contrôle</a></li>
+</ol>
+<h2 id="intérêts-dun-script">Intérêts d’un script</h2>
+<p>Les scripts shell offrent plusieurs avantages : - L’automatisation
+des tâches répétitives. - La gestion centralisée et efficace du système.
+- La personnalisation des opérations selon les besoins. - La
+simplification et la sécurisation des processus administratifs.</p>
+<h2 id="éléments-dun-script">Éléments d’un script</h2>
+<p>Un script shell typique contient les éléments suivants : 1. En-tête
+2. Commentaires 3. Affectations 4. Définition et appels de fonctions 5.
+Commandes 6. Structures de contrôle</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># En-tête : Indique à quel interpréteur le script doit être envoyé.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Commentaires : Explique le fonctionnement du script.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Ce script salue un utilisateur et vérifie son identité.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Affectations : Stocke des valeurs dans des variables.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="va">utilisateur</span><span class="op">=</span><span class="st">&quot;Alice&quot;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Définition de fonction : Affiche un message de bienvenue personnalisé.</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">saluer()</span> <span class="kw">{</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Bonjour, </span><span class="va">$1</span><span class="st"> !&quot;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Appel de la fonction avec une variable.</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ex">saluer</span> <span class="st">&quot;</span><span class="va">$utilisateur</span><span class="st">&quot;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Commandes : Affiche quelques informations.</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Affichage du répertoire courant :&quot;</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Structures de contrôle : Vérifie le nom de l&#39;utilisateur et réagit en conséquence.</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$utilisateur</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;Alice&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Accès autorisé pour Alice.&quot;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Accès refusé.&quot;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h2 id="en-tête-et-choix-de-linterpréteur">En-tête et Choix de
+l’Interpréteur</h2>
+<p>L’en-tête, communément appelé Shebang, détermine l’interpréteur qui
+exécutera le script. Ce choix est crucial pour garantir la compatibilité
+et le comportement attendu du script. Voici quelques interpréteurs
+populaires et leurs spécificités :</p>
+<h3 id="bash-bourne-again-shell">1. Bash (Bourne Again SHell)</h3>
+<p>Bash est probablement l’interpréteur de script le plus utilisé en
+environnement Linux. Il offre une syntaxe étendue et de nombreuses
+fonctionnalités modernes.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Script exécuté avec Bash.&quot;</span></span></code></pre></div>
+<h3 id="sh-bourne-shell">2. Sh (Bourne Shell)</h3>
+<p>Sh est une version plus ancienne et plus épurée, souvent utilisée
+pour des scripts POSIX. Bien que moins riche en fonctionnalités que
+Bash, il assure une compatibilité plus large sur divers systèmes
+Unix.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Script exécuté avec Sh.&quot;</span></span></code></pre></div>
+<h3 id="utilisation-de-usrbinenv">3. Utilisation de /usr/bin/env</h3>
+<p>L’utilisation de <code>/usr/bin/env</code> permet de rechercher
+l’interpréteur dans le PATH de l’utilisateur. Cette pratique est utile
+pour garantir que le script utilise l’interpréteur attendu même si son
+emplacement varie d’un système à l’autre.</p>
+<p>Exemple avec Bash :</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Script exécuté avec Bash via env.&quot;</span></span></code></pre></div>
+<p>Exemple avec Sh :</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env sh</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Script exécuté avec Sh via env.&quot;</span></span></code></pre></div>
+<h3 id="autres-interpréteurs">4. Autres Interpréteurs</h3>
+<ul>
+<li><p><strong>KornShell (ksh)</strong> : Combine des fonctionnalités de
+Bourne Shell et de C Shell, souvent utilisé dans certains systèmes UNIX
+traditionnels.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env ksh</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Script exécuté avec KornShell.&quot;</span></span></code></pre></div></li>
+<li><p><strong>Z Shell (zsh)</strong> : Offrant de nombreuses
+fonctionnalités interactives supplémentaires, zsh est de plus en plus
+populaire pour les scripts et la ligne de commande interactive.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env zsh</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Script exécuté avec Z Shell.&quot;</span></span></code></pre></div></li>
+</ul>
+<p>Sélectionner le bon interpréteur dépend de vos besoins en
+fonctionnalités et de la compatibilité que vous souhaitez garantir sur
+les systèmes cibles.</p>
+<h2 id="commentaires-et-bonnes-pratiques">Commentaires et Bonnes
+Pratiques</h2>
+<p>Les commentaires sont essentiels pour améliorer la lisibilité et la
+maintenabilité de vos scripts. Ils permettent de décrire l’intention du
+code, d’expliquer des parties complexes et de délimiter clairement les
+sections fonctionnelles. Voici un exemple de script avec des
+commentaires bien structurés :</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Description : Vérifie si l&#39;utilisateur possède les droits administratifs.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Auteur      : Votre Nom</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Date        : 2023-10-05</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="va">utilisateur</span><span class="op">=</span><span class="st">&quot;Alice&quot;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Vérification du privilège administrateur</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$utilisateur</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;admin&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Accès autorisé pour l&#39;administrateur.&quot;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Accès refusé : droits insuffisants.&quot;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Fin du script</span></span></code></pre></div>
+<p>Quelques points à retenir : - Utilisez des blocs de commentaires pour
+décrire l’objectif global du script et l’auteur. - Commentez chaque
+section ou bloc de code pour expliquer son rôle. - Évitez les
+commentaires évidents. Privilégiez ceux qui ajoutent une réelle valeur
+en expliquant le pourquoi et non le comment. - Mettez à jour les
+commentaires lors des modifications du code pour éviter toute
+désinformation.</p>
+<p>Ces pratiques facilitent la compréhension par d’autres développeurs
+et aident lors du dépannage ou de l’extension du script.</p>
+<h2 id="affectations">Affectations</h2>
+<p>Les affectations en shell permettent de stocker des valeurs dans des
+variables, facilitant ainsi leur réutilisation et rendant vos scripts
+plus dynamiques. Voici différentes manières de les utiliser :</p>
+<h3 id="affectation-de-chaînes-de-caractères">1. Affectation de chaînes
+de caractères</h3>
+<p>Attribuez directement une chaîne de caractères à une variable.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">nom_utilisateur</span><span class="op">=</span><span class="st">&quot;morganguy&quot;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Bonjour, </span><span class="va">$nom_utilisateur</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="affectation-par-substitution-de-commande">2. Affectation par
+substitution de commande</h3>
+<p>Vous pouvez assigner le résultat d’une commande à une variable en
+utilisant la substitution de commande.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">date_actuelle</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%Y-%m-%d<span class="va">)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Date du jour : </span><span class="va">$date_actuelle</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="affectation-arithmétique">3. Affectation arithmétique</h3>
+<p>Utilisez l’expansion arithmétique pour effectuer des calculs et
+stocker le résultat dans une variable.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">nombre</span><span class="op">=</span>5</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="va">resultat</span><span class="op">=</span><span class="va">$((</span> <span class="va">nombre</span> <span class="op">*</span> <span class="dv">2</span> <span class="va">))</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Le double de </span><span class="va">$nombre</span><span class="st"> est </span><span class="va">$resultat</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="affectation-et-exportation-dune-variable">4. Affectation et
+exportation d’une variable</h3>
+<p>Pour rendre une variable accessible à des sous-processus,
+exportez-la.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">chemin</span><span class="op">=</span><span class="st">&quot;/usr/local/bin&quot;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Le chemin exporté est : </span><span class="va">$chemin</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="affectation-avec-expansion-de-paramètres">5. Affectation avec
+expansion de paramètres</h3>
+<p>Utilisez des expressions comme la substitution de valeur par défaut
+pour gérer les cas où une variable pourrait être vide ou non
+définie.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Si la variable &#39;utilisateur&#39; n&#39;est pas définie, utiliser &quot;invité&quot; par défaut.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="va">utilisateur</span><span class="op">=</span><span class="va">${utilisateur</span><span class="op">:-</span>invité<span class="va">}</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Bonjour, </span><span class="va">$utilisateur</span><span class="st">&quot;</span></span></code></pre></div>
+<p>Ces différentes approches augmentent la flexibilité de vos scripts en
+vous permettant d’adapter les affectations selon les besoins.</p>
+<h2 id="définition-et-appels-de-fonctions">Définition et appels de
+fonctions</h2>
+<p>Les fonctions permettent de regrouper un ensemble de commandes sous
+un même nom pour faciliter la réutilisation du code, l’organisation et
+la lisibilité de vos scripts. Elles peuvent accepter des arguments,
+retourner un code de sortie et interagir avec des variables globales.
+Voici quelques points détaillés sur leur utilisation :</p>
+<h3 id="définition-de-fonction">Définition de fonction</h3>
+<p>La syntaxe de base pour définir une fonction est la suivante :</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nom_de_fonction()</span> <span class="kw">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensemble des commandes à exécuter</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Exemple de fonction&quot;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>Notez que l’utilisation des parenthèses est facultative, mais elle
+clarifie l’intention.</p>
+<h3 id="passage-darguments">Passage d’arguments</h3>
+<p>Les fonctions récupèrent les paramètres passés lors de leur appel via
+des variables positionnelles : - $1, <span class="math inline">$2, …
+pour accéder aux arguments individuels.
+- "$</span>@” pour récupérer l’ensemble des arguments sous forme de
+liste.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saluer()</span> <span class="kw">{</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Récupération du premier argument</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">local</span> <span class="va">nom</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Bonjour, </span><span class="va">$nom</span><span class="st">&quot;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Appel de la fonction avec un argument</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="ex">saluer</span> <span class="st">&quot;Alice&quot;</span></span></code></pre></div>
+<p>Utiliser la commande “local” permet de définir des variables à portée
+locale à la fonction, empêchant ainsi des collisions avec des variables
+globales.</p>
+<h3 id="retour-de-valeurs">Retour de valeurs</h3>
+<p>Contrairement à d’autres langages, une fonction shell ne retourne pas
+directement une valeur mais un code de sortie (0 pour le succès). Pour
+renvoyer des résultats, il est courant d’utiliser l’écho ou d’affecter
+une variable globale.</p>
+<p>Exemple avec code de sortie :</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">est_pair()</span> <span class="kw">{</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="va">$((</span> <span class="va">$1</span> <span class="op">%</span> <span class="dv">2</span> <span class="va">))</span> <span class="ot">-eq</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="va">nombre</span><span class="op">=</span>4</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ex">est_pair</span> <span class="st">&quot;</span><span class="va">$nombre</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$nombre</span><span class="st"> est pair.&quot;</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$nombre</span><span class="st"> est impair.&quot;</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Exemple avec sortie via echo :</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">additionner()</span> <span class="kw">{</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">local</span> <span class="va">somme</span><span class="op">=</span><span class="va">$((</span> <span class="va">$1</span> <span class="op">+</span> <span class="va">$2</span> <span class="va">))</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$somme</span><span class="st">&quot;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="va">resultat</span><span class="op">=</span><span class="va">$(</span><span class="ex">additionner</span> 3 5<span class="va">)</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;La somme est </span><span class="va">$resultat</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="utilisation-des-variables-globales-et-locales">Utilisation des
+variables globales et locales</h3>
+<p>Par défaut, une variable déclarée dans une fonction est globale. Pour
+éviter des effets secondaires, utilisez le mot-clé “local” pour limiter
+la portée d’une variable à la fonction :</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">modifier()</span> <span class="kw">{</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">local</span> <span class="va">variable_locale</span><span class="op">=</span><span class="st">&quot;Je suis limitée ici&quot;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="va">variable_globale</span><span class="op">=</span><span class="st">&quot;Je peux être utilisée partout&quot;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$variable_locale</span><span class="st">&quot;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="va">variable_globale</span><span class="op">=</span><span class="st">&quot;Initiale&quot;</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="ex">modifier</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$variable_globale</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="bonnes-pratiques">Bonnes pratiques</h3>
+<ul>
+<li>Déclarez toujours vos variables à l’aide de “local” dans les
+fonctions pour limiter l’impact sur le reste du script.</li>
+<li>Vérifiez les paramètres d’entrée et traitez les cas d’erreur (par
+exemple, en affichant un message d’utilisation si les arguments sont
+manquants).</li>
+<li>Documentez votre fonction avec des commentaires explicites pour
+décrire son comportement, ses paramètres et son code de sortie.</li>
+<li>Utilisez des noms de fonction explicites qui décrivent bien leur
+rôle.</li>
+</ul>
+<p>Ce niveau de détails vous permettra de mieux structurer et maintenir
+vos scripts shell tout en vous assurant d’une utilisation cohérente des
+fonctions.</p>
+<h2 id="commandes">Commandes</h2>
+<p>Le cœur d’un script est constitué de commandes que le shell exécute.
+Chaque ligne peut contenir une ou plusieurs commandes :</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div>
+<h2 id="structures-de-contrôle">Structures de contrôle</h2>
+<p>Les structures de contrôle permettent de gérer le flux d’exécution du
+script en fonction de conditions ou de boucles.</p>
+<h3 id="structures-conditionnelles">Structures conditionnelles</h3>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$nom</span><span class="st">&quot;</span> <span class="ot">=</span> <span class="st">&quot;Alice&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Bienvenue Alice&quot;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Vous n&#39;êtes pas Alice&quot;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<h3 id="boucles">Boucles</h3>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">5</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Iteration </span><span class="va">$i</span><span class="st">&quot;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>

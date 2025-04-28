@@ -1,0 +1,98 @@
+<h3
+id="techniques-de-manipulation-de-chaînes-en-shell-scripting">Techniques
+de manipulation de chaînes en Shell Scripting</h3>
+<p>La manipulation de chaînes est essentielle pour écrire des scripts
+robustes et flexibles.</p>
+<h3 id="table-des-matières">Table des matières</h3>
+<ol type="1">
+<li><a
+href="#techniques-de-manipulation-de-chaînes-en-shell-scripting">Techniques
+de manipulation de chaînes en Shell Scripting</a></li>
+<li><a href="#utilisation-de-la-commande-expr">Utilisation de la
+commande <code>expr</code></a></li>
+<li><a href="#instructions-de-capture">Instructions de capture</a></li>
+<li><a href="#utilisation-de-basename">Utilisation de
+<code>basename</code></a></li>
+<li><a href="#substitution-de-chaînes">Substitution de chaînes</a></li>
+</ol>
+<hr />
+<h4 id="utilisation-de-la-commande-expr">1. Utilisation de la commande
+<code>expr</code></h4>
+<p>La commande <code>expr</code> permet de réaliser diverses opérations
+sur les chaînes de caractères, dont la mesure de la longueur, la
+recherche d’index, ou la découpe de sous-chaînes.</p>
+<p>Exemples :</p>
+<ul>
+<li><p><strong>Calcul de la longueur d’une chaîne</strong><br />
+<code>bash  str="Hello, World!"  length=$(expr length "$str")  echo "La longueur de la chaîne est : $length"</code>
+Ici, <code>expr length "$str"</code> calcule le nombre de caractères
+dans la chaîne.</p></li>
+<li><p><strong>Extraction d’une sous-chaîne</strong><br />
+<code>bash  str="ShellScripting"  # Extraire 6 caractères à partir de la 6ème position  sub=$(expr substr "$str" 6 6)  echo "La sous-chaîne est : $sub"</code>
+<code>expr substr "$str" 6 6</code> retourne une sous-chaîne commençant
+à la position 6 et ayant 6 caractères.</p></li>
+<li><p><strong>Recherche d’un index</strong><br />
+<code>bash  str="Hello, World!"  pos=$(expr index "$str" "W")  echo "La lettre 'W' est à la position : $pos"</code>
+<code>expr index "$str" "W"</code> retourne la position de la première
+occurrence du caractère.</p></li>
+</ul>
+<hr />
+<h4 id="instructions-de-capture">2. Instructions de capture</h4>
+<p>Les expressions régulières en shell permettent d’extraire des
+sous-chaînes correspondant à des motifs précis. En combinant des outils
+comme <code>grep</code>, <code>sed</code>, ou <code>awk</code>, on peut
+capturer précisément ce dont on a besoin.</p>
+<p>Exemple avec <code>sed</code> :</p>
+<ul>
+<li><strong>Extraire une adresse email d’une chaîne</strong><br />
+<code>bash  text="Contactez-nous à support@example.com pour de l'assistance."  email=$(echo "$text" | sed -n 's/.*\([a-zA-Z0-9._%+-]\+@[a-zA-Z0-9.-]\+\.[a-zA-Z]\{2,\}\).*/\1/p')  echo "Email extrait : $email"</code>
+Cette commande utilise une expression régulière pour capturer et
+afficher une adresse email.</li>
+</ul>
+<p>Exemple avec <code>awk</code> :</p>
+<ul>
+<li><strong>Extraire le domaine d’une adresse email</strong><br />
+<code>bash  email="support@example.com"  domain=$(echo "$email" | awk -F'@' '{print $2}')  echo "Le domaine est : $domain"</code>
+Ici, <code>awk</code> décompose la chaîne en utilisant <code>@</code>
+comme séparateur.</li>
+</ul>
+<hr />
+<h4 id="utilisation-de-basename">3. Utilisation de
+<code>basename</code></h4>
+<p>La commande <code>basename</code> est utile pour extraire le nom de
+fichier d’un chemin complet, en supprimant le répertoire et parfois
+l’extension.</p>
+<p>Exemples :</p>
+<ul>
+<li><p><strong>Extraire le nom de fichier</strong><br />
+<code>bash  path="/Users/morganguy/Desktop/file.txt"  filename=$(basename "$path")  echo "Le nom du fichier est : $filename"</code>
+<code>basename</code> supprime la partie chemin, ne laissant que
+<code>file.txt</code>.</p></li>
+<li><p><strong>Retirer également l’extension</strong><br />
+<code>bash  path="/Users/morganguy/Desktop/file.txt"  filename=$(basename "$path" .txt)  echo "Le nom du fichier sans extension est : $filename"</code>
+En passant <code>.txt</code> comme argument, <code>basename</code>
+enlève l’extension du nom de fichier.</p></li>
+</ul>
+<hr />
+<h4 id="substitution-de-chaînes">4. Substitution de chaînes</h4>
+<p>Les substitutions de chaînes dans les variables offrent des moyens
+puissants pour manipuler des contenus sans lancer de sous-processus. La
+syntaxe <code>${variable#pattern}</code> et
+<code>${variable##pattern}</code> permet de supprimer des préfixes,
+tandis que <code>${variable%pattern}</code> et
+<code>${variable%%pattern}</code> gèrent les suffixes.</p>
+<p>Exemples :</p>
+<ul>
+<li><p><strong>Suppression d’un préfixe</strong><br />
+<code>bash  str="Hello, World!"  # Supprimer le préfixe "Hello, "  result=${str#Hello, }  echo "Résultat : $result"  # Affiche "World!"</code>
+<code>${str#Hello, }</code> retire la première occurrence du préfixe
+spécifié.</p></li>
+<li><p><strong>Suppression d’un suffixe</strong><br />
+<code>bash  str="Hello, World!"  # Supprimer le suffixe " World!"  result=${str% World!*}  echo "Résultat : $result"  # Affiche "Hello,"</code>
+<code>${str% World!*}</code> retire la plus courte correspondance du
+suffixe, ici à partir de ” World!“.</p></li>
+<li><p><strong>Utilisation de la suppression gourmande</strong><br />
+<code>bash  path="/home/user/documents/report.pdf"  # Retirer le chemin jusqu'au dernier slash (la partie la plus longue)  filename=${path##*/}  echo "Nom du fichier : $filename"</code>
+<code>${path##*/}</code> supprime tout jusqu’au dernier <code>/</code>,
+isolant ainsi le nom de fichier.</p></li>
+</ul>

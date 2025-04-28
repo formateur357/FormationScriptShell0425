@@ -1,0 +1,93 @@
+<h2 id="interception-de-signaux-en-shell-scripting">Interception de
+Signaux en Shell Scripting</h2>
+<p>L’interception de signaux en shell scripting est une technique
+puissante pour gérer des événements asynchrones dans l’exécution d’un
+script. Elle permet à votre script de réagir à divers signaux envoyés
+par le système ou l’utilisateur. Ces signaux indiquent la survenue
+d’événements spécifiques, tels qu’une interruption manuelle ou une
+demande de terminaison, et peuvent être utilisés pour effectuer des
+opérations de nettoyage ou sauvegarder des données avant de clore un
+processus.</p>
+<h3 id="les-signaux-et-leur-importance">Les Signaux et Leur
+Importance</h3>
+<p>Les signaux sont des notifications envoyées à un processus. Voici
+quelques-uns des signaux les plus utilisés :</p>
+<ul>
+<li><strong>SIGINT</strong> : Envoyé lors de l’appui sur Ctrl+C. Permet
+d’interrompre une opération en cours.</li>
+<li><strong>SIGTERM</strong> : Utilisé pour demander la terminaison d’un
+processus de manière polie.</li>
+<li><strong>SIGHUP</strong> : Se produit lorsque la session ou le
+terminal associé est fermé. Peut être utilisé pour recharger la
+configuration.</li>
+<li><strong>SIGQUIT</strong> : Généralement envoyé par Ctrl+ et provoque
+l’arrêt du programme avec un dump mémoire.</li>
+<li><strong>SIGKILL</strong> : Force la terminaison d’un processus. Ce
+signal ne peut pas être intercepté ou ignoré.</li>
+<li><strong>SIGUSR1</strong> et <strong>SIGUSR2</strong> : Signaux
+définis par l’utilisateur et personnalisables pour envoyer des
+notifications ou déclencher des actions spécifiques.</li>
+</ul>
+<p>L’utilisation judicieuse de la gestion des signaux permet d’améliorer
+la robustesse et la fiabilité de vos scripts, notamment dans les
+environnements de production ou lors de l’exécution de tâches
+sensibles.</p>
+<h3 id="la-commande-trap">La Commande Trap</h3>
+<p>La commande <code>trap</code> permet de définir des actions à
+exécuter lorsqu’un signal spécifique est reçu par le script. La syntaxe
+générale est la suivante :</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&#39;action&#39;</span> SIGNAL</span></code></pre></div>
+<ul>
+<li>L’argument <code>action</code> représente le code à exécuter lorsque
+le signal est intercepté.</li>
+<li><code>SIGNAL</code> est le nom du signal (par exemple, SIGINT,
+SIGTERM, etc.).</li>
+</ul>
+<p>On peut également utiliser <code>trap</code> pour nettoyer les
+ressources, fermer les fichiers ou sauvegarder l’état avant la
+terminaison du script.</p>
+<h3 id="gestion-avancée-et-bonnes-pratiques">Gestion Avancée et Bonnes
+Pratiques</h3>
+<ol type="1">
+<li><p><strong>Utiliser Trap pour le Nettoyage :</strong> Lorsque vous
+interceptez un signal, il est courant d’exécuter une fonction qui ferme
+les connexions, libère des ressources ou enregistre l’état du
+système.</p></li>
+<li><p><strong>Multiple Signaux dans une Seule Instruction :</strong>
+Vous pouvez associer la même action à plusieurs signaux :
+<code>bash  trap 'cleanup' SIGINT SIGTERM</code></p></li>
+<li><p><strong>Réinitialiser un Signal :</strong> Pour restaurer le
+comportement par défaut d’un signal, utilisez la commande :
+<code>bash  trap - SIGNAL</code> Par exemple, pour restaurer le
+comportement par défaut de SIGINT :
+<code>bash  trap - SIGINT</code></p></li>
+<li><p><strong>Débogage et Journalisation :</strong> Lors du
+développement d’un script, il peut être utile de logguer quand et
+comment les signaux sont capturés pour faciliter le débogage.</p></li>
+</ol>
+<h3 id="exemple-pratique-complet">Exemple Pratique Complet</h3>
+<p>Dans cet exemple, nous interceptons le signal SIGINT (généré par
+Ctrl+C) pour exécuter une fonction de nettoyage. Nous montrons également
+comment intercepter plusieurs signaux simultanément, et comment inclure
+une journalisation simple :</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Fonction de nettoyage et de journalisation</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cleanup()</span> <span class="kw">{</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>     <span class="bu">echo</span> <span class="st">&quot;[</span><span class="va">$(</span><span class="fu">date</span> <span class="st">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="va">)</span><span class="st">] Signal reçu, lancement des procédures de nettoyage...&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>     <span class="co"># Placez ici vos opérations de nettoyage (fermeture de fichiers, sauvegarde, etc.)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>     <span class="fu">sleep</span> 1  <span class="co"># Simulation d&#39;une tâche de nettoyage</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>     <span class="bu">echo</span> <span class="st">&quot;Nettoyage terminé. Fermeture du script.&quot;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>     <span class="bu">exit</span> 0</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Interception de SIGINT et SIGTERM</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&#39;cleanup&#39;</span> SIGINT SIGTERM</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Boucle principale du script</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>     <span class="bu">echo</span> <span class="st">&quot;Exécution du script... (appuyez sur Ctrl+C ou envoyez SIGTERM pour interrompre)&quot;</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>     <span class="fu">sleep</span> 2</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>

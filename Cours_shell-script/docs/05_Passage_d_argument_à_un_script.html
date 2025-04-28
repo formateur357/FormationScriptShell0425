@@ -1,0 +1,175 @@
+<h2 id="passage-dargument-à-un-script">Passage d’argument à un
+script</h2>
+<p>Dans les scripts shell, il est souvent nécessaire de passer des
+arguments pour rendre le script plus dynamique et interactif. Les
+arguments permettent à l’utilisateur de fournir des données au script
+lors de son exécution. Nous allons développer chaque point et fournir
+des exemples concrets.</p>
+<h2 id="table-des-matières">Table des Matières</h2>
+<ul>
+<li><a href="#passage-dargument-à-un-script">Passage d’argument à un
+script</a></li>
+<li><a href="#1-notion-de-paramètres-positionnels">1. Notion de
+paramètres positionnels</a></li>
+<li><a
+href="#2-récupération-et-modification-des-paramètres-commande-set">2.
+Récupération et modification des paramètres (commande set)</a></li>
+<li><a href="#3-exemples-dutilisation">3. Exemples d’utilisation</a>
+<ul>
+<li><a href="#exemple-1--affichage-des-arguments">Exemple 1 : Affichage
+des arguments</a></li>
+<li><a
+href="#exemple-2--utilisation-conditionnelle-des-arguments">Exemple 2 :
+Utilisation conditionnelle des arguments</a></li>
+</ul></li>
+<li><a href="#4-utilisation-de-shift-pour-parcourir-les-arguments">4.
+Utilisation de shift pour parcourir les arguments</a></li>
+<li><a href="#5-différence-entre-*--et--@">5. Différence entre “<span
+class="math inline">$*" et "$</span>@”</a></li>
+<li><a href="#6-passage-doptions-avec-getopts">6. Passage d’options avec
+getopts</a></li>
+<li><a href="#7-bonnes-pratiques-et-vérification-darguments">7. Bonnes
+pratiques et vérification d’arguments</a></li>
+</ul>
+<h3 id="notion-de-paramètres-positionnels">1. Notion de paramètres
+positionnels</h3>
+<p>Les paramètres positionnels sont les arguments passés au script dans
+l’ordre où ils apparaissent. Chaque argument est accessible via des
+variables nommées <code>$1</code>, <code>$2</code>, <code>$3</code>,
+etc. Par exemple, si vous exécutez le script :</p>
+<p>Commande : ./mon_script.sh arg1 arg2 arg3</p>
+<p>Dans le script, <code>$1</code> vaut “arg1”, <code>$2</code> vaut
+“arg2”, et <code>$3</code> vaut “arg3”.</p>
+<p>Exemple concret :</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Premier argument : </span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Deuxième argument : </span><span class="va">$2</span><span class="st">&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Troisième argument : </span><span class="va">$3</span><span class="st">&quot;</span></span></code></pre></div>
+<p>Exécution : ./mon_script.sh pomme orange banane</p>
+<p>=&gt; Affichera : Premier argument : pomme<br />
+Deuxième argument : orange<br />
+Troisième argument : banane</p>
+<h3 id="récupération-et-modification-des-paramètres-commande-set">2.
+Récupération et modification des paramètres (commande set)</h3>
+<p>La commande <code>set</code> est utile pour modifier la liste des
+paramètres positionnels après le lancement du script. En utilisant
+<code>set --</code>, vous pouvez redéfinir les valeurs des
+paramètres.</p>
+<p>Exemple concret :</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Afficher les arguments initiaux</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Arguments initiaux : </span><span class="va">$@</span><span class="st">&quot;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Modification des paramètres positionnels</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">--</span> <span class="st">&quot;nouveau1&quot;</span> <span class="st">&quot;nouveau2&quot;</span> <span class="st">&quot;nouveau3&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Afficher les nouveaux paramètres</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Arguments après set : </span><span class="va">$@</span><span class="st">&quot;</span></span></code></pre></div>
+<p>Exécution initiale peut être faite avec : ./mon_script.sh a b c</p>
+<p>Mais après la commande <code>set --</code>, les arguments seront
+remplacés par “nouveau1”, “nouveau2” et “nouveau3”.</p>
+<h3 id="exemples-dutilisation">3. Exemples d’utilisation</h3>
+<h4 id="exemple-1-affichage-des-arguments">Exemple 1 : Affichage des
+arguments</h4>
+<p>Un script simple qui affiche tous les paramètres passés à
+l’exécution.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Nombre d&#39;arguments : </span><span class="va">$#</span><span class="st">&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Liste des arguments : </span><span class="va">$@</span><span class="st">&quot;</span></span></code></pre></div>
+<p>Ici, <code>$#</code> retourne le nombre d’arguments et
+<code>$@</code> affiche la liste complète des arguments.</p>
+<h4 id="exemple-2-utilisation-conditionnelle-des-arguments">Exemple 2 :
+Utilisation conditionnelle des arguments</h4>
+<p>Le script peut effectuer différentes actions en fonction de la valeur
+du premier argument. Par exemple, s’il vaut “hello”, il affiche un
+message spécifique.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="ot">==</span> <span class="st">&quot;hello&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Vous avez passé &#39;hello&#39; comme premier argument.&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Premier argument : </span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Si le script est exécuté avec : ./mon_script.sh hello world Il
+affichera : Vous avez passé ‘hello’ comme premier argument.</p>
+<h3 id="utilisation-de-shift-pour-parcourir-les-arguments">4.
+Utilisation de shift pour parcourir les arguments</h3>
+<p>La commande <code>shift</code> permet de “déplacer” la liste des
+arguments, ce qui est utile pour traiter un nombre variable d’arguments
+dans une boucle.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Arguments avant shift : </span><span class="va">$@</span><span class="st">&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$#</span><span class="st">&quot;</span> <span class="ot">-gt</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Argument courant : </span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">shift</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Chaque appel à <code>shift</code> fait passer <code>$2</code> en
+<code>$1</code>, <code>$3</code> en <code>$2</code>, et ainsi de
+suite.</p>
+<h3 id="différence-entre-et">5. Différence entre “<span
+class="math inline">$*" et "$</span>@”</h3>
+<ul>
+<li>“$*” combine tous les arguments en une seule chaîne, séparés par le
+premier caractère défini dans IFS (Internal Field Separator).</li>
+<li>“$@” traite chaque argument comme une chaîne distincte, surtout
+utile dans des boucles ou lors du passage en paramètre à d’autres
+commandes.</li>
+</ul>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Utilisation de </span><span class="dt">\&quot;\$</span><span class="st">*</span><span class="dt">\&quot;</span><span class="st">: </span><span class="va">$*</span><span class="st">&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Utilisation de </span><span class="dt">\&quot;\$</span><span class="st">@</span><span class="dt">\&quot;</span><span class="st">:&quot;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> arg <span class="kw">in</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$arg</span><span class="st">&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="passage-doptions-avec-getopts">6. Passage d’options avec
+getopts</h3>
+<p>Pour gérer des options multiples et des arguments optionnels, la
+commande <code>getopts</code> est très pratique. Elle simplifie
+l’analyse des options en ligne de commande.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">getopts</span> <span class="st">&quot;a:b:&quot;</span> <span class="va">opt</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="va">$opt</span> <span class="kw">in</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">a</span><span class="kw">)</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="bu">echo</span> <span class="st">&quot;Option -a avec valeur : </span><span class="va">$OPTARG</span><span class="st">&quot;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="ss">b</span><span class="kw">)</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="bu">echo</span> <span class="st">&quot;Option -b avec valeur : </span><span class="va">$OPTARG</span><span class="st">&quot;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">\?</span><span class="kw">)</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      <span class="bu">echo</span> <span class="st">&quot;Option invalide : -</span><span class="va">$OPTARG</span><span class="st">&quot;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">esac</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Ce script traite les options <code>-a</code> et <code>-b</code> avec
+leurs arguments respectifs.</p>
+<h3 id="bonnes-pratiques-et-vérification-darguments">7. Bonnes pratiques
+et vérification d’arguments</h3>
+<ul>
+<li>Vérifiez toujours le nombre d’arguments attendus au début du
+script.</li>
+<li>Fournissez un message d’aide en cas d’utilisation incorrecte,
+souvent à l’aide d’une condition qui affiche l’usage du script.</li>
+<li>Utilisez des variables locales dans des fonctions pour éviter des
+conflits avec les paramètres globaux.</li>
+</ul>
+<p>Exemple de vérification :</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$#</span><span class="st">&quot;</span> <span class="ot">-lt</span> 2 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Usage: </span><span class="va">$0</span><span class="st"> argument1 argument2 [argument3 ...]&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 1</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Arguments validés, exécution du script...&quot;</span></span></code></pre></div>
+<p>Cette vérification assure que le script reçoit au moins deux
+arguments, sinon il s’arrête et affiche un message d’usage.</p>

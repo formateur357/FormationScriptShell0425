@@ -1,0 +1,95 @@
+<h1 id="gestion-de-menus">Gestion de Menus</h1>
+<h2 id="introduction">Introduction</h2>
+<p>La gestion de menus dans les scripts shell permet de créer des
+interfaces utilisateur simples et interactives pour faciliter la
+navigation et l’exécution des commandes. Grâce à ces menus, les
+utilisateurs n’ont pas besoin de se souvenir de toutes les commandes
+précises. On peut guider l’utilisateur étape par étape, rendant ainsi le
+script plus convivial et accessible.</p>
+<h2 id="création-dun-menu">Création d’un Menu</h2>
+<p>Pour mettre en place un menu dans un script bash, l’idée principale
+est d’utiliser une boucle, souvent une boucle <code>while</code>, qui
+affiche en continu les options disponibles et récupère l’entrée de
+l’utilisateur pour exécuter l’action correspondante. Voici quelques
+points clés :</p>
+<ol type="1">
+<li><p><strong>Affichage des Options</strong><br />
+À chaque itération de la boucle, le script affiche les choix disponibles
+(par exemple, Option 1, Option 2, Quitter).</p></li>
+<li><p><strong>Lecture de l’Entrée Utilisateur</strong><br />
+La commande <code>read</code> permet de capturer la réponse de
+l’utilisateur qui est stockée dans une variable. Cette variable est
+ensuite évaluée pour décider de l’action à mener.</p></li>
+<li><p><strong>Exécution de l’Action Correspondante</strong><br />
+La structure <code>case</code> est utilisée pour associer chaque option
+à une ou plusieurs commandes. Cela permet de gérer proprement chaque cas
+de figure et de proposer une réponse appropriée en fonction de l’entrée
+de l’utilisateur.</p></li>
+<li><p><strong>Conditions d’Arrêt</strong> Habituellement, une des
+options permet de sortir de la boucle (souvent “Quitter”). Pour cela, le
+script utilise la commande <code>break</code> afin de terminer la boucle
+et clore le menu proprement.</p></li>
+</ol>
+<h2 id="exemple-de-menu-avec-explications">Exemple de Menu avec
+Explications</h2>
+<p>L’exemple suivant présente un menu simple en bash avec des
+commentaires détaillés pour expliquer chaque partie :</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Boucle infinie qui affichera constamment le menu jusqu&#39;à ce que l&#39;utilisateur choisisse de quitter</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>     <span class="co"># Affichage des options disponibles dans le menu</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>     <span class="bu">echo</span> <span class="st">&quot;=== Menu ===&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>     <span class="bu">echo</span> <span class="st">&quot;1. Option 1&quot;</span>    <span class="co"># Option pour exécuter une action spécifique</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>     <span class="bu">echo</span> <span class="st">&quot;2. Option 2&quot;</span>    <span class="co"># Une deuxième option d&#39;action</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>     <span class="bu">echo</span> <span class="st">&quot;3. Quitter&quot;</span>     <span class="co"># Option pour sortir du menu et terminer le script</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>     <span class="co"># Demande à l&#39;utilisateur de choisir une option et stocke sa réponse dans la variable &quot;option&quot;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>     <span class="bu">read</span> <span class="at">-p</span> <span class="st">&quot;Choisissez une option: &quot;</span> <span class="va">option</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>     <span class="co"># La structure &quot;case&quot; permet de gérer différentes actions selon la valeur de &quot;option&quot;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>     <span class="cf">case</span> <span class="va">$option</span> <span class="kw">in</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>          <span class="ss">1</span><span class="kw">)</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Action pour l&#39;option 1</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                <span class="bu">echo</span> <span class="st">&quot;Vous avez choisi l&#39;option 1.&quot;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Ici, on peut appeler une fonction ou exécuter d&#39;autres commandes correspondant à l&#39;option 1</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>                <span class="cf">;;</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>          <span class="ss">2</span><span class="kw">)</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Action pour l&#39;option 2</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                <span class="bu">echo</span> <span class="st">&quot;Vous avez choisi l&#39;option 2.&quot;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                <span class="co"># De même, intégrer ici le code propre à l&#39;option 2</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>                <span class="cf">;;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>          <span class="ss">3</span><span class="kw">)</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Action pour quitter le menu</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                <span class="bu">echo</span> <span class="st">&quot;Au revoir!&quot;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span>  <span class="co"># Arrête la boucle et termine le script</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>                <span class="cf">;;</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>          <span class="pp">*</span><span class="kw">)</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Cas par défaut pour gérer les entrées non valides</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>                <span class="bu">echo</span> <span class="st">&quot;Option invalide. Veuillez réessayer.&quot;</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                <span class="cf">;;</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>     <span class="cf">esac</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h3 id="explications-complémentaires">Explications Complémentaires</h3>
+<ul>
+<li><p><strong>Boucle <code>while true</code>:</strong><br />
+Elle permet de maintenir l’affichage du menu tant qu’aucune condition
+d’arrêt (ici l’option “Quitter”) n’est rencontrée. Cela crée une boucle
+infinie qui ne s’arrête que lorsqu’on déclenche explicitement une
+sortie.</p></li>
+<li><p><strong>Commande <code>read</code>:</strong><br />
+Utilisée avec l’option <code>-p</code> pour afficher une invite de
+commande, elle permet de récupérer facilement l’entrée de l’utilisateur.
+La valeur saisie définit ensuite l’action dans le bloc
+<code>case</code>.</p></li>
+<li><p><strong>Structure <code>case</code>:</strong><br />
+Elle est idéale pour traiter plusieurs cas de figure, chaque option
+étant gérée par un bloc spécifique (1, 2, 3, ou toutes autres valeurs
+via le <code>*</code>). Cela rend la gestion du menu claire et
+extensible.</p></li>
+<li><p><strong>Utilisation du <code>break</code>:</strong><br />
+Essentiel pour sortir de la boucle <code>while</code> lorsque
+l’utilisateur choisit de quitter. Sans <code>break</code>, la boucle
+continuerait indéfiniment.</p></li>
+</ul>

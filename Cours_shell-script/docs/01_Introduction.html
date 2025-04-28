@@ -1,0 +1,90 @@
+<h1 id="introduction-aux-shell-scripting">Introduction aux Shell
+Scripting</h1>
+<p>La programmation de scripts shell est un outil puissant qui permet
+aux utilisateurs d’automatiser des tâches et de gérer les opérations
+système de manière efficace. Elle consiste à écrire une série de
+commandes dans un fichier, que le shell interprète et exécute. Cette
+introduction aborde l’importance des scripts shell et leurs principes de
+base.</p>
+<h2 id="importance-des-scripts-shell">Importance des scripts shell</h2>
+<ol type="1">
+<li><strong>Automatisation</strong> : Les scripts shell peuvent
+automatiser des tâches répétitives, économisant du temps et réduisant le
+risque d’erreurs humaines.<br />
+<em>Exemple : Un script cron qui sauvegarde automatiquement des fichiers
+tous les soirs à 23h00.</em></li>
+</ol>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Script de sauvegarde automatique</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">BACKUP_DIR</span><span class="op">=</span><span class="st">&quot;/backup&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="va">SOURCE_DIR</span><span class="op">=</span><span class="st">&quot;/home/user/documents&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="va">DATE</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%F<span class="va">)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-czf</span> <span class="st">&quot;</span><span class="va">${BACKUP_DIR}</span><span class="st">/</span><span class="va">${DATE}</span><span class="st">_backup.tar.gz&quot;</span> <span class="st">&quot;</span><span class="va">${SOURCE_DIR}</span><span class="st">&quot;</span></span></code></pre></div>
+<ol start="2" type="1">
+<li><strong>Efficacité</strong> : Les scripts peuvent exécuter plusieurs
+commandes en séquence, ce qui est souvent plus rapide qu’une exécution
+manuelle.<br />
+<em>Exemple : Un script qui met à jour le système, nettoie les fichiers
+temporaires et redémarre les services en une seule exécution.</em></li>
+</ol>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Mise à jour du système</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt upgrade <span class="at">-y</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Nettoyage des fichiers temporaires</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /tmp/<span class="pp">*</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Redémarrage des services critiques</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl restart apache2</span></code></pre></div>
+<ol start="3" type="1">
+<li><strong>Gestion du système</strong> : Les scripts shell sont
+essentiels pour les administrateurs système afin de gérer les
+configurations, les sauvegardes et la surveillance du système.<br />
+<em>Exemple : Un script qui surveille l’utilisation du disque et envoie
+une alerte par email si l’espace libre devient insuffisant.</em></li>
+</ol>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Surveillance de l&#39;espace disque</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">THRESHOLD</span><span class="op">=</span>20</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="va">USAGE</span><span class="op">=</span><span class="va">$(</span><span class="fu">df</span> / <span class="kw">|</span> <span class="fu">grep</span> / <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{ print $5 }&#39;</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">&#39;s/%//g&#39;</span><span class="va">)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$USAGE</span><span class="st">&quot;</span> <span class="ot">-gt</span> <span class="st">&quot;</span><span class="va">$THRESHOLD</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>   <span class="bu">echo</span> <span class="st">&quot;Alerte: l&#39;utilisation du disque a dépassé </span><span class="va">${THRESHOLD}</span><span class="st">%.&quot;</span> <span class="kw">|</span> <span class="ex">mail</span> <span class="at">-s</span> <span class="st">&quot;Alerte Espace Disque&quot;</span> admin@example.com</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<ol start="4" type="1">
+<li><strong>Personnalisation</strong> : Les utilisateurs peuvent créer
+des scripts adaptés à leurs besoins spécifiques, augmentant ainsi leur
+productivité.<br />
+<em>Exemple : Un script personnalisé qui configure l’environnement de
+développement en installant les dépendances nécessaires et en
+configurant les variables d’environnement automatiquement.</em></li>
+</ol>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Configuration de l&#39;environnement de développement</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Installation des dépendances...&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> git curl vim</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Configuration des variables d&#39;environnement...&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">DEV_HOME</span><span class="op">=</span><span class="st">&quot;/home/user/dev&quot;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Votre environnement de développement est prêt.&quot;</span></span></code></pre></div>
+<h2 id="principes-de-base-des-scripts-shell">Principes de base des
+scripts shell</h2>
+<ul>
+<li><strong>Shebang</strong> : La première ligne d’un script commence
+généralement par <code>#!/bin/bash</code>, indiquant que le script doit
+être exécuté dans le shell Bash.</li>
+<li><strong>Commentaires</strong> : Les lignes commençant par
+<code>#</code> sont des commentaires et sont ignorées par le shell,
+permettant une documentation au sein du script.</li>
+<li><strong>Commandes</strong> : Chaque ligne d’un script peut contenir
+une commande que le shell exécutera.</li>
+<li><strong>Variables</strong> : Les scripts shell peuvent utiliser des
+variables pour stocker des données, rendant les scripts plus dynamiques
+et flexibles.</li>
+<li><strong>Structures de contrôle</strong> : Les scripts peuvent
+inclure des instructions conditionnelles et des boucles pour contrôler
+le flux d’exécution en fonction de certaines conditions.</li>
+</ul>
+<p>En comprenant ces concepts fondamentaux, les utilisateurs peuvent
+commencer à exploiter la puissance des scripts shell pour rationaliser
+leurs flux de travail et améliorer leur productivité.</p>

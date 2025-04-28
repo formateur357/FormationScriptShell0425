@@ -1,0 +1,187 @@
+<h2 id="instructions-de-test-en-shell-scripting">Instructions de test en
+Shell Scripting</h2>
+<p>Les instructions de test sont essentielles pour contrôler le flux
+d’un script en évaluant des conditions. Elles permettent de vérifier
+l’existence de fichiers, comparer des valeurs ou évaluer des chaînes de
+caractères, entre autres.</p>
+<h2 id="table-des-matières">Table des Matières</h2>
+<ol type="1">
+<li><a href="#instructions-de-test-en-shell-scripting">Instructions de
+test en Shell Scripting</a></li>
+<li><a href="#tests-sur-les-fichiers-et-répertoires">Tests sur les
+fichiers et répertoires</a>
+<ul>
+<li><a href="#a-test-dexistence">a. Test d’existence</a></li>
+<li><a href="#b-test-de-type">b. Test de type</a></li>
+<li><a href="#c-test-de-permission">c. Test de permission</a></li>
+</ul></li>
+<li><a href="#tests-sur-les-nombres-entiers">Tests sur les nombres
+entiers</a>
+<ul>
+<li><a href="#a-comparaison-de-nombres">a. Comparaison de
+nombres</a></li>
+<li><a href="#b-operations-arithmetiques">b. Opérations
+arithmétiques</a></li>
+</ul></li>
+<li><a href="#tests-sur-les-chaines-de-caracteres">Tests sur les chaînes
+de caractères</a>
+<ul>
+<li><a href="#a-comparaison-de-chaines">a. Comparaison de
+chaînes</a></li>
+<li><a href="#b-verification-de-la-longueur">b. Vérification de la
+longueur</a></li>
+<li><a href="#c-verification-dune-chaine-vide">c. Vérification d’une
+chaîne vide</a></li>
+<li><a href="#d-verification-dune-chaine-non-vide">d. Vérification d’une
+chaîne non vide</a></li>
+<li><a href="#e-comparaison-avancee-avec">e. Comparaison avancée avec [[
+]]</a></li>
+</ul></li>
+</ol>
+<h3 id="tests-sur-les-fichiers-et-répertoires">1. Tests sur les fichiers
+et répertoires</h3>
+<p>Voici un rappel des commandes et options utiles pour les conditions
+de tests en Shell (utilisées via le mot-clé test ou les crochets [
+]):</p>
+<p>• Commande générale de test : - test EXPRESSION - [ EXPRESSION ]</p>
+<p>• Options courantes : - -e : vérifie l’existence du fichier ou
+répertoire. - -f : vérifie si c’est un fichier régulier. - -d : vérifie
+si c’est un répertoire. - -L : vérifie s’il s’agit d’un lien symbolique.
+- -r : vérifie si le fichier est lisible. - -w : vérifie si le fichier
+est modifiable (inscriptible). - -x : vérifie si le fichier est
+exécutable. - -c, -b : vérifient respectivement si le fichier est un
+périphérique caractère ou bloc.</p>
+<h4 id="a.-test-dexistence">a. Test d’existence</h4>
+<p>La commande principale pour vérifier l’existence d’une cible est : •
+test -e “nom_de_fichier” ou [ -e “nom_de_fichier” ] Cette option renvoie
+vrai si l’élément spécifié existe (fichier, répertoire, lien symbolique,
+etc.).</p>
+<p>Exemple : • Vérification de l’existence de “exemple.txt” :</p>
+<p><code>bash code if [ -e "exemple.txt" ]; then     echo "exemple.txt existe." else     echo "exemple.txt n'existe pas." fi</code></p>
+<h4 id="b.-test-de-type">b. Test de type</h4>
+<p>Pour déterminer le type de cible, on utilise les options suivantes :
+• -f pour un fichier régulier. • -d pour un répertoire. • -L pour un
+lien symbolique. Ces tests aident à différencier rapidement le type
+d’une entité.</p>
+<p>Exemple : • Test pour différencier un fichier et un répertoire :</p>
+<p><code>bash code if [ -f "exemple.txt" ]; then if [[ -f "exemple."* ]]; then     echo "exemple.txt est un fichier régulier." elif [ -d "exemple.txt" ]; then     echo "exemple.txt est un répertoire." else     echo "exemple.txt n'est ni un fichier ni un répertoire." fi</code></p>
+<h4 id="c.-test-de-permission">c. Test de permission</h4>
+<p>Pour vérifier les permissions d’accès, plusieurs options sont
+disponibles : • -r : teste si le fichier ou répertoire est lisible. • -w
+: teste s’il est écrivable (modifiable). • -x : teste s’il est
+exécutable. Ces options permettent de s’assurer que les opérations
+prévues sur les fichiers pourront être réalisées.</p>
+<p>Exemple : • Vérification des permissions sur “exemple.txt” :</p>
+<p>```bash code if [ -r “exemple.txt” ]; then echo “exemple.txt est
+lisible.” else echo “exemple.txt n’est pas lisible.” fi</p>
+<p>if [ -w “exemple.txt” ]; then echo “exemple.txt est modifiable.” else
+echo “exemple.txt n’est pas modifiable.” fi</p>
+<p>if [ -x “exemple.txt” ]; then echo “exemple.txt est exécutable.” else
+echo “exemple.txt n’est pas exécutable.” fi</p>
+<pre><code>
+Exemple :
+    • Vérification si &quot;exemple.txt&quot; est lisible et exécutable :
+
+```bash code
+if [ -r &quot;exemple.txt&quot; ]; then
+    echo &quot;exemple.txt est lisible.&quot;
+fi
+
+if [ -x &quot;exemple.txt&quot; ]; then
+    echo &quot;exemple.txt est exécutable.&quot;
+fi</code></pre>
+<h3 id="tests-sur-les-nombres-entiers">2. Tests sur les nombres
+entiers</h3>
+<p>Voici une liste des commandes et opérateurs les plus utiles pour les
+tests sur les nombres entiers :</p>
+<p>• Comparaison arithmétique avec les crochets [ ] ou la commande test
+:   - -eq : égal à   - -ne : différent de   - -gt : supérieur à   - -ge
+: supérieur ou égal à   - -lt : inférieur à   - -le : inférieur ou égal
+à</p>
+<p>Ces opérateurs sont utilisés directement dans les conditions pour
+comparer deux valeurs numériques.</p>
+<h4 id="a.-comparaison-de-nombres">a. Comparaison de nombres</h4>
+<p>Exemple de comparaison pour déterminer le plus petit nombre :</p>
+<p>```bash code NUM1=10<br />
+NUM2=20</p>
+<p>if [ $NUM1 -lt <span class="math inline">$NUM2 ]; then
+    echo "$</span>NUM1 est inférieur à $NUM2.”<br />
+fi</p>
+<pre><code>
+D&#39;autres comparaisons utiles peuvent être mises en place à l&#39;aide des opérateurs cités pour vérifier l&#39;égalité ou les différences entre deux entiers.
+
+#### b. Opérations arithmétiques
+
+Plusieurs commandes facilitent le calcul dans le script :
+
+• Utilisation de l&#39;expansion arithmétique :  
+
+```bash code
+SUM=$((NUM1 + NUM2))</code></pre>
+<p>Cette méthode permet d’effectuer des calculs directement et de
+stocker la valeur dans une variable.</p>
+<p>• La commande let (alternative) :</p>
+<p><code>bash code let SUM=NUM1+NUM2</code></p>
+<p>Permet de réaliser des opérations arithmétiques sans expansion
+supplémentaire.</p>
+<p>• La commande expr (option historique) :</p>
+<p><code>bash code SUM=$(expr $NUM1 + $NUM2)</code></p>
+<p>Bien que moins utilisée aujourd’hui, elle offre une autre syntaxe
+pour les opérations.</p>
+<p>Exemple d’addition de deux nombres :</p>
+<p>```bash code NUM1=10<br />
+NUM2=20</p>
+<p>SUM=$((NUM1 + NUM2))<br />
+echo “La somme de $NUM1 et $NUM2 est $SUM.”</p>
+<pre><code>
+### 3. Tests sur les chaînes de caractères
+
+Les tests sur les chaînes de caractères permettent de comparer, vérifier l’état ou mesurer des chaînes dans un script Shell. Les commandes de test sont généralement exécutées avec la syntaxe [ EXPRESSION ] ou avec test directement. Voici les commandes et options les plus utiles avant les exemples :
+
+• Comparaison de chaînes avec [ ] :
+  - &quot;==&quot; : vérifie l’égalité stricte entre deux chaînes.
+  - &quot;!=&quot; : vérifie la différence entre deux chaînes.
+
+• Vérification de la présence ou de l’absence d’une valeur :
+  - -z : teste si la chaîne est vide (de longueur nulle).
+  - -n : teste si la chaîne n’est pas vide.
+
+• Calcul de la longueur d’une chaîne :
+  - ${#variable} : renvoie le nombre de caractères contenus dans la variable.
+
+Ces commandes permettent d’effectuer des tests conditionnels efficaces sur les chaînes de caractères.
+
+#### a. Comparaison de chaînes
+Permet de vérifier l’égalité ou la différence entre deux chaînes.
+
+Exemple :  
+
+```bash code
+STR1=&quot;Bonjour&quot;  
+STR2=&quot;Bonjour&quot;
+  
+if [ &quot;$STR1&quot; == &quot;$STR2&quot; ]; then  
+    echo &quot;Les chaînes sont identiques.&quot;  
+else  
+    echo &quot;Les chaînes sont différentes.&quot;  
+fi</code></pre>
+<h4 id="b.-vérification-de-la-longueur">b. Vérification de la
+longueur</h4>
+<p>Il est parfois nécessaire de connaître la longueur d’une chaîne pour
+prendre des décisions dans le script.</p>
+<p><code>bash code STR1="Bonjour"   LENGTH=${#STR1} echo "La longueur de la chaîne '$STR1' est $LENGTH caractères."</code></p>
+<h4 id="c.-vérification-dune-chaîne-vide">c. Vérification d’une chaîne
+vide</h4>
+<p>Utilisez l’option -z pour tester si une chaîne est vide.</p>
+<p><code>bash code VAR=""   if [ -z "$VAR" ]; then       echo "La variable est vide."   else       echo "La variable n'est pas vide."   fi</code></p>
+<h4 id="d.-vérification-dune-chaîne-non-vide">d. Vérification d’une
+chaîne non vide</h4>
+<p>L’option -n permet de vérifier si une chaîne n’est pas vide.</p>
+<p><code>bash code VAR="Bonjour"   if [ -n "$VAR" ]; then       echo "La variable n'est pas vide."   else       echo "La variable est vide."   fi</code></p>
+<h4 id="e.-comparaison-avancée-avec">e. Comparaison avancée avec [[
+]]</h4>
+<p>La construction [[ ]] offre plus de souplesse pour la comparaison,
+notamment en autorisant la syntaxe de correspondance de motifs et
+l’absence de problèmes liés aux espaces ou aux caractères spéciaux.</p>
+<p>Exemple :</p>
+<p><code>bash code STR="Bonjour le monde"   if [[ "$STR" == *"le monde"* ]]; then       echo "La chaîne contient 'le monde'."   else       echo "La chaîne ne contient pas 'le monde'."   fi</code></p>

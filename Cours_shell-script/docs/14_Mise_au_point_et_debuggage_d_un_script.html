@@ -1,0 +1,150 @@
+<h1 id="mise-au-point-et-débogage-dun-script">Mise au point et débogage
+d’un script</h1>
+<p>Le débogage est une étape cruciale dans le développement de scripts
+shell. Il permet d’identifier et de corriger les erreurs en fournissant
+une vision détaillée de l’exécution du script. Une bonne stratégie de
+débogage aide à améliorer la fiabilité et la maintenabilité du code en
+permettant aux développeurs d’intervenir rapidement lorsqu’un problème
+survient.</p>
+<h2 id="techniques-de-débogage">Techniques de débogage</h2>
+<ol type="1">
+<li><p><strong>Utilisation de <code>set -x</code></strong><br />
+L’option <code>set -x</code> active le mode de débogage, qui affiche
+chaque commande au moment de son exécution. Cela permet de suivre le
+chemin d’exécution du script et de visualiser les substitutions et
+évaluations des variables.</p>
+<p>Exemple d’utilisation :</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-x</span>  <span class="co"># Active l&#39;affichage de chaque commande exécutée</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Début du script&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># D&#39;autres commandes seront affichées avec leur évaluation</span></span></code></pre></div>
+<p>Cette technique est particulièrement utile pour comprendre le flux
+d’exécution et identifier l’origine d’un comportement inattendu. Elle
+peut toutefois générer de nombreux messages, donc il est conseillé de
+l’utiliser principalement lors de la phase de développement ou sur des
+sections spécifiques du code.</p></li>
+<li><p><strong>Utilisation de <code>set -e</code></strong><br />
+L’option <code>set -e</code> force l’arrêt immédiat du script dès qu’une
+commande retourne une valeur différente de zéro (ce qui indique une
+erreur). Cela permet d’éviter que des erreurs non traitées ne conduisent
+à des comportements imprévus plus tard dans le script.</p>
+<p>Exemple d’utilisation :</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-e</span>  <span class="co"># Interrompt l&#39;exécution du script en cas d&#39;erreur</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Début du script&quot;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Si une commande échoue ici, le script s&#39;arrêtera immédiatement</span></span></code></pre></div>
+<p>Cette méthode est recommandée pour les scripts nécessitant une
+exécution fiable, car elle permet d’éviter que le script continue lors
+d’une situation indésirable.</p></li>
+<li><p><strong>Ajout de messages de débogage avec <code>echo</code> ou
+<code>printf</code></strong><br />
+Parfois, il est utile d’insérer des messages explicatifs à des points
+stratégiques dans le script pour observer la valeur des variables ou
+l’exécution de certaines conditions.</p>
+<p>Exemple d’utilisation :</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Début du script&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Vérification de l&#39;existence d&#39;une variable</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-z</span> <span class="st">&quot;</span><span class="va">$VAR</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;La variable VAR est vide, veuillez vérifier son assignation&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;La variable VAR contient : </span><span class="va">$VAR</span><span class="st">&quot;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Ces messages permettent de confirmer que le script atteint bien
+certains points et peut aider à identifier précisément où se situe un
+problème.</p></li>
+<li><p><strong>Utilisation de <code>trap</code> pour la gestion des
+signaux</strong><br />
+La commande <code>trap</code> est utilisée pour intercepter et gérer les
+signaux envoyés au script. Cela permet, par exemple, de réaliser des
+actions de nettoyage ou d’afficher un message personnalisé lorsqu’un
+signal (comme l’interruption par Ctrl+C) est reçu.</p>
+<p>Exemple d’utilisation :</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">&#39;echo &quot;Script interrompu par l&#39;</span>utilisateur<span class="st">&quot;; exit&#39; SIGINT</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">echo &quot;</span>Début du script<span class="st">&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st"># Suite du script...</span></span></code></pre></div>
+<p>Cette technique assure que même en cas d’interruption, le script peut
+exécuter des actions essentielles, telles que la libération des
+ressources ou l’enregistrement d’informations de débogage.</p></li>
+</ol>
+<h2 id="outils-de-débogage">Outils de débogage</h2>
+<p>En complément aux techniques ci-dessus, plusieurs outils peuvent
+aider à vérifier et améliorer vos scripts :</p>
+<ul>
+<li><p><strong>bash -n</strong><br />
+Vérifie la syntaxe d’un script sans l’exécuter. Cette commande permet de
+détecter des erreurs de syntaxe avant même de lancer le script.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="at">-n</span> script.sh</span></code></pre></div></li>
+<li><p><strong>bash -x</strong><br />
+Exécute le script en mode débogage (similaire à <code>set -x</code>),
+affichant chaque commande avec son évaluation.</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="at">-x</span> script.sh</span></code></pre></div></li>
+<li><p><strong>ShellCheck</strong><br />
+Un outil de vérification statique qui analyse le code shell pour
+détecter des erreurs courantes, de mauvaises pratiques et des problèmes
+potentiels de sécurité.</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shellcheck</span> script.sh</span></code></pre></div>
+<p>ShellCheck offre des conseils détaillés, ce qui peut être très
+bénéfique pour l’apprentissage et l’amélioration de la qualité des
+scripts shell.</p></li>
+</ul>
+<h2
+id="exemple-complet-de-script-utilisant-plusieurs-techniques-de-débogage">Exemple
+complet de script utilisant plusieurs techniques de débogage</h2>
+<p>Voici un exemple de script qui combine plusieurs techniques de
+débogage afin de faciliter la compréhension et l’identification des
+problèmes :</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Exemple de script pour démontrer plusieurs techniques de débogage</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-e</span>  <span class="co"># Arrête le script dès qu&#39;une commande échoue</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-x</span>  <span class="co"># Active le mode débogage pour afficher chaque commande exécutée</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Définition d&#39;une fonction pour nettoyer les ressources en cas d&#39;interruption</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cleanup()</span> <span class="kw">{</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Nettoyage des ressources...&quot;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ajouter ici les commandes de nettoyage</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Trap pour intercepter l&#39;interruption par l&#39;utilisateur (Ctrl+C)</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> cleanup SIGINT</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Début du script&quot;</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Exemple d&#39;assignation d&#39;une variable</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="va">VAR</span><span class="op">=</span><span class="st">&quot;Test&quot;</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Vérification de la variable avec messages détaillés</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-z</span> <span class="st">&quot;</span><span class="va">$VAR</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Erreur: La variable VAR est vide.&quot;</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Possibilité d&#39;ajouter une gestion d&#39;erreur plus poussé ici</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;La variable VAR contient : </span><span class="va">$VAR</span><span class="st">&quot;</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Simuler une commande qui échoue pour tester le comportement avec set -e</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Simulation d&#39;une erreur avec la commande &#39;false&#39;&quot;</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="fu">false</span>  <span class="co"># Cette commande échoue et devrait arrêter l&#39;exécution en raison de set -e</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Ce message ne sera pas affiché en cas d&#39;erreur</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Fin du script&quot;</span></span></code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>Le débogage est une partie intégrante du développement de scripts
+shell. En utilisant de manière combinée les options <code>set -x</code>
+et <code>set -e</code>, l’insertion de messages explicatifs et
+l’utilisation de <code>trap</code>, vous pouvez aisément suivre et
+corriger le déroulement de votre script. L’utilisation d’outils comme
+<code>ShellCheck</code> ajoute une couche supplémentaire d’assurance
+quant à la qualité et la sécurité de votre code. Ces pratiques
+permettent d’améliorer la robustesse du script et facilitent la
+maintenance à long terme.</p>

@@ -1,0 +1,119 @@
+<h1 id="utilisation-de-fonctions-2-heures">Utilisation de fonctions (2
+heures)</h1>
+<h2 id="principes-de-base">Principes de base</h2>
+<p>Les fonctions permettent de regrouper des blocs de code
+réutilisables, ce qui améliore la lisibilité et la structure des
+scripts. Elles facilitent la décomposition des tâches complexes en
+segments logiques et indépendants. Utiliser des fonctions permet aussi
+de réduire la duplication du code.</p>
+<h2 id="table-des-matières">Table des Matières</h2>
+<ul>
+<li><a href="#utilisation-de-fonctions-2-heures">Utilisation de
+fonctions (2 heures)</a></li>
+<li><a href="#principes-de-base">Principes de base</a></li>
+<li><a href="#creation-de-fonctions">Création de fonctions</a></li>
+<li><a href="#visibilite-des-variables">Visibilité des
+variables</a></li>
+<li><a href="#passage-de-parametres">Passage de paramètres</a></li>
+<li><a href="#exemples-avances">Exemples avancés</a>
+<ul>
+<li><a href="#manipulation-de-parametres-multiples">Manipulation de
+paramètres multiples</a></li>
+<li><a href="#retour-dune-valeur-depuis-une-fonction">Retour d’une
+valeur depuis une fonction</a></li>
+<li><a href="#utilisation-de-fonctions-recursives">Utilisation de
+fonctions récursives</a></li>
+</ul></li>
+</ul>
+<h2 id="création-de-fonctions">Création de fonctions</h2>
+<p>La syntaxe standard pour définir une fonction en shell est la
+suivante :</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nom_de_la_fonction()</span> <span class="kw">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># instructions</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>Cette structure vous permet d’encapsuler un comportement spécifique
+que vous pouvez réutiliser partout dans votre script.</p>
+<h2 id="visibilité-des-variables">Visibilité des variables</h2>
+<p>Les variables déclarées à l’intérieur d’une fonction sont locales par
+défaut, ce qui signifie qu’elles ne sont accessibles qu’au sein de cette
+fonction. Pour partager une variable entre fonctions, déclarez-la à
+l’extérieur ou exportez-la si nécessaire :</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">message</span><span class="op">=</span><span class="st">&quot;Bonjour tout le monde&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">afficher_message()</span> <span class="kw">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$message</span><span class="st">&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>Attention, certains shells peuvent avoir des comportements différents
+concernant la portée des variables.</p>
+<h2 id="passage-de-paramètres">Passage de paramètres</h2>
+<p>Les fonctions peuvent recevoir des paramètres grâce aux variables
+positionnelles <code>$1</code>, <code>$2</code>, etc. Cela vous permet
+de transmettre des données dynamiques à la fonction :</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ma_fonction()</span> <span class="kw">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Le premier paramètre est : </span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Le deuxième paramètre est : </span><span class="va">$2</span><span class="st">&quot;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>Vous pouvez également utiliser une boucle pour traiter un nombre
+variable de paramètres :</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">afficher_tous_params()</span> <span class="kw">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> param <span class="kw">in</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Paramètre: </span><span class="va">$param</span><span class="st">&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<h2 id="exemples-avancés">Exemples avancés</h2>
+<h3 id="manipulation-de-paramètres-multiples">1. Manipulation de
+paramètres multiples</h3>
+<p>Utilisation des paramètres positionnels pour traiter un nombre
+inconnu d’arguments :</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">traiter_arguments()</span> <span class="kw">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Nombre d&#39;arguments passés: </span><span class="va">$#</span><span class="st">&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">compteur</span><span class="op">=</span>1</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> arg <span class="kw">in</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Argument </span><span class="va">$compteur</span><span class="st">: </span><span class="va">$arg</span><span class="st">&quot;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">compteur</span><span class="op">=</span><span class="va">$((compteur</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="ex">traiter_arguments</span> <span class="st">&quot;premier&quot;</span> <span class="st">&quot;deuxième&quot;</span> <span class="st">&quot;troisième&quot;</span></span></code></pre></div>
+<h3 id="retour-dune-valeur-depuis-une-fonction">2. Retour d’une valeur
+depuis une fonction</h3>
+<p>Bien que les fonctions shell ne puissent pas retourner directement
+des chaînes de caractères, il est possible de renvoyer des valeurs via
+la commande <code>echo</code> et de les capturer en utilisant des
+substitutions de commande :</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">additionner()</span> <span class="kw">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">somme</span><span class="op">=</span><span class="va">$((</span> <span class="va">$1</span> <span class="op">+</span> <span class="va">$2</span> <span class="va">))</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="va">$somme</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="va">resultat</span><span class="op">=</span><span class="va">$(</span><span class="ex">additionner</span> 5 7<span class="va">)</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Le résultat de l&#39;addition est : </span><span class="va">$resultat</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="utilisation-de-fonctions-récursives">3. Utilisation de fonctions
+récursives</h3>
+<p>Voici un exemple basique illustrant une fonction récursive qui
+calcule la factorielle d’un nombre :</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">factorielle()</span> <span class="kw">{</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="ot">-le</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> 1</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">local</span> <span class="va">temp</span><span class="op">=</span><span class="va">$(</span><span class="ex">factorielle</span> <span class="va">$((</span> <span class="va">$1</span> <span class="op">-</span> <span class="dv">1</span> <span class="va">)))</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="va">$((</span> <span class="va">$1</span> <span class="op">*</span> <span class="va">temp</span> <span class="va">))</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="va">nombre</span><span class="op">=</span>5</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="va">resultat</span><span class="op">=</span><span class="va">$(</span><span class="ex">factorielle</span> <span class="va">$nombre)</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;La factorielle de </span><span class="va">$nombre</span><span class="st"> est : </span><span class="va">$resultat</span><span class="st">&quot;</span></span></code></pre></div>

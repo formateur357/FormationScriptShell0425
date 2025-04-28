@@ -1,0 +1,208 @@
+<h2 id="exécution-dun-script">Exécution d’un script :</h2>
+<p>L’exécution d’un script shell est une étape essentielle pour
+automatiser des tâches dans un environnement Unix/Linux. Voici plusieurs
+méthodes pour lancer un script avec des explications détaillées, des
+exemples concrets et quelques bonnes pratiques.</p>
+<h2 id="table-des-matières">Table des matières</h2>
+<ol type="1">
+<li><a href="#1-préparation-du-script">Préparation du script</a></li>
+<li><a href="#2-rendre-le-script-exécutable">Rendre le script
+exécutable</a></li>
+</ol>
+<ul>
+<li><a href="#utilisation-de-base">Utilisation de base</a></li>
+<li><a href="#explication-des-options">Explication des options</a></li>
+<li><a href="#contrôle-fin-avec-les-permissions-numériques">Contrôle fin
+avec les permissions numériques</a></li>
+<li><a href="#vérification-des-permissions">Vérification des
+permissions</a></li>
+</ul>
+<ol start="3" type="1">
+<li><a href="#3-méthodes-dexécution">Méthodes d’exécution</a></li>
+</ol>
+<ul>
+<li><a href="#a-exécution-directe">Exécution directe</a></li>
+<li><a href="#b-exécution-via-linterpréteur">Exécution via
+l’interpréteur</a></li>
+<li><a href="#c-utilisation-du-chemin-complet">Utilisation du chemin
+complet</a></li>
+<li><a href="#d-exécution-en-arrière-plan">Exécution en
+arrière-plan</a></li>
+</ul>
+<ol start="4" type="1">
+<li><a
+href="#4-exécution-de-commandes-spécifiques-dans-un-script">Exécution de
+commandes spécifiques dans un script</a></li>
+<li><a href="#5-considérations-et-bonnes-pratiques">Considérations et
+bonnes pratiques</a></li>
+<li><a href="#6-exemple-complet">Exemple complet</a></li>
+</ol>
+<h3 id="préparation-du-script">1. Préparation du script</h3>
+<p>Avant toute exécution, il est important de :</p>
+<ul>
+<li>Vérifier l’existence de l’interpréteur en première ligne avec un
+“shebang” (par exemple, <code>#!/bin/bash</code>).</li>
+<li>Rendre le script exécutable si vous souhaitez l’exécuter
+directement.</li>
+</ul>
+<h3 id="rendre-le-script-exécutable">2. Rendre le script exécutable</h3>
+<p>Pour exécuter un script directement, il est nécessaire que le fichier
+ait les droits d’exécution. La commande utilisée pour cela est
+<code>chmod</code>.</p>
+<h4 id="utilisation-de-base">Utilisation de base</h4>
+<p>La syntaxe de base pour ajouter le droit d’exécution à un fichier est
+:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x nom_du_script.sh</span></code></pre></div>
+<p>Ce qui fait en sorte que tous les utilisateurs (propriétaire, groupe
+et autres) puissent exécuter le script.</p>
+<h4 id="explication-des-options">Explication des options</h4>
+<ul>
+<li>Le symbole <code>+x</code> ajoute le droit d’exécution.</li>
+<li>Vous pouvez également spécifier pour quel type d’utilisateur
+appliquer ce droit :
+<ul>
+<li><code>u</code> pour le propriétaire (user)</li>
+<li><code>g</code> pour le groupe</li>
+<li><code>o</code> pour les autres</li>
+</ul></li>
+</ul>
+<p>Par exemple, pour ajouter le droit d’exécution uniquement pour le
+propriétaire, vous pouvez utiliser :</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u+x nom_du_script.sh</span></code></pre></div>
+<h4 id="contrôle-fin-avec-les-permissions-numériques">Contrôle fin avec
+les permissions numériques</h4>
+<p>Les permissions en Unix/Linux peuvent aussi être définies avec des
+valeurs numériques. Les trois chiffres représentent le propriétaire, le
+groupe et les autres respectivement. Pour donner les droits d’exécution
+au propriétaire tout en conservant les droits de lecture et d’écriture
+et en accordant seulement des droits de lecture et d’exécution pour le
+groupe et les autres, vous pouvez écrire :</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 755 nom_du_script.sh</span></code></pre></div>
+<p>Cela veut dire : - <code>7</code> (pour le propriétaire) = lecture
+(4) + écriture (2) + exécution (1) - <code>5</code> (pour le groupe) =
+lecture (4) + exécution (1) - <code>5</code> (pour les autres) = lecture
+(4) + exécution (1)</p>
+<h4 id="vérification-des-permissions">Vérification des permissions</h4>
+<p>Pour vérifier que les droits ont bien été appliqués, utilisez la
+commande suivante :</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> nom_du_script.sh</span></code></pre></div>
+<p>Vous devriez voir quelque chose comme :</p>
+<pre><code>-rwxr-xr-x  1 utilisateur  groupe  taille Date nom_du_script.sh</code></pre>
+<p>Les lettres <code>r</code>, <code>w</code>, et <code>x</code>
+indiquent respectivement les permissions de lecture, écriture et
+exécution.</p>
+<p>Avec ces informations, vous disposez d’une vue d’ensemble sur
+l’utilisation de <code>chmod</code> pour rendre un script exécutable
+tout en contrôlant précisément qui peut l’exécuter.</p>
+<h3 id="méthodes-dexécution">3. Méthodes d’exécution</h3>
+<h4 id="a.-exécution-directe">A. Exécution directe</h4>
+<p>Une fois le script rendu exécutable, vous pouvez l’exécuter
+directement :</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./nom_du_script.sh</span></span></code></pre></div>
+<blockquote>
+<p>Note : Le chemin courant (<code>.</code>) doit être inclus si le
+dossier n’est pas dans votre variable d’environnement PATH.</p>
+</blockquote>
+<h4 id="b.-exécution-via-linterpréteur">B. Exécution via
+l’interpréteur</h4>
+<p>Même si le script n’est pas exécutable ou si vous souhaitez
+explicitement préciser l’interpréteur, vous pouvez lancer le script de
+la manière suivante :</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> nom_du_script.sh</span></code></pre></div>
+<p>Des interpréteurs alternatifs sont également possibles, par exemple
+pour <code>sh</code>, <code>zsh</code>, etc.</p>
+<h4 id="c.-utilisation-du-chemin-complet">C. Utilisation du chemin
+complet</h4>
+<p>Lorsque le script se trouve dans un répertoire différent de celui du
+terminal, fournissez le chemin complet :</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/path/to/nom_du_script.sh</span></span></code></pre></div>
+<p>Cela garantit que le système localise correctement le script.</p>
+<h4 id="d.-exécution-en-arrière-plan">D. Exécution en arrière-plan</h4>
+<p>Pour lancer un script en arrière-plan et libérer votre terminal pour
+d’autres commandes :</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./nom_du_script.sh</span> <span class="kw">&amp;</span></span></code></pre></div>
+<p>Astuce : Pour suivre l’exécution d’un script lancé en arrière-plan,
+utilisez la commande <code>jobs</code>. Vous pouvez aussi rediriger la
+sortie standard et d’erreur vers un fichier pour conserver un historique
+complet, par exemple :</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./mon_script.sh</span> <span class="op">&gt;</span> sortie.log <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
+<p>La commande exécute le script “mon_script.sh” en arrière-plan tout en
+redirigeant à la fois la sortie standard (stdout) et la sortie d’erreur
+(stderr) vers le fichier “sortie.log”.</p>
+<p>Détail de chaque partie : - “./mon_script.sh” : Lance le script
+présent dans le répertoire courant. - “&gt; sortie.log” : Redirige la
+sortie standard du script vers le fichier “sortie.log”. - “2&gt;&amp;1”
+: Redirige en même temps la sortie d’erreur vers la même destination que
+la sortie standard (ici, “sortie.log”). - “&amp;” : Exécute la commande
+en arrière-plan, permettant ainsi de récupérer le contrôle du terminal
+immédiatement.</p>
+<h3 id="exécution-de-commandes-spécifiques-dans-un-script">4. Exécution
+de commandes spécifiques dans un script</h3>
+<p>Votre script peut contenir des commandes à exécuter de différentes
+manières :</p>
+<ul>
+<li><p><strong>Commande en arrière-plan interne</strong> : Lancez une
+opération longue en arrière-plan pour optimiser l’exécution.</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 5 <span class="kw">&amp;</span></span></code></pre></div></li>
+<li><p><strong>Commande avec spécification d’interpréteur</strong> :
+Exécuter des commandes avec un interpréteur particulier.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="at">-c</span> <span class="st">&#39;echo &quot;Commande exécutée sous bash.&quot;&#39;</span></span></code></pre></div></li>
+</ul>
+<h3 id="considérations-et-bonnes-pratiques">5. Considérations et bonnes
+pratiques</h3>
+<ul>
+<li><p><strong>Permissions</strong> : Assurez-vous que seuls les
+utilisateurs autorisés ont accès aux scripts sensibles.</p></li>
+<li><p><strong>Shebang</strong> : Toujours commencer le script par une
+ligne de shebang pour définir l’interpréteur.</p></li>
+<li><p><strong>Variables d’environnement</strong> : Modifiez ou exportez
+les variables d’environnement selon les besoins du script.</p></li>
+<li><p><strong>Gestion des erreurs</strong> : Intégrez des mécanismes de
+contrôle d’erreurs. Par exemple, utilisez <code>set -e</code> pour
+arrêter l’exécution en cas d’erreur :</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-e</span>  <span class="co"># Arrête le script en cas d&#39;erreur</span></span></code></pre></div></li>
+<li><p><strong>Commentaires</strong> : Ajoutez des commentaires pour
+clarifier le rôle et le fonctionnement du script, facilitant ainsi sa
+maintenance.</p></li>
+</ul>
+<h3 id="exemple-complet">6. Exemple complet</h3>
+<p>Voici un exemple de script détaillé qui illustre plusieurs des
+aspects présentés ci-dessus :</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Exemple avancé de script</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Active le mode &quot;erreure&quot; pour stopper le script si une commande échoue</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-e</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Début de l&#39;exécution du script.&quot;</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Exemple d&#39;utilisation d&#39;une commande en arrière-plan</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 5 <span class="kw">&amp;</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Commandes asynchrones lancées en arrière-plan.&quot;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Exécution d&#39;une commande avec un interpréteur spécifique</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="at">-c</span> <span class="st">&#39;echo &quot;Exécution d&#39;</span>une commande via bash.<span class="st">&quot;&#39;</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="st"># Exemple d&#39;utilisation de variables d&#39;environnement</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="st">MY_VAR=&quot;</span>ValeurExemple<span class="st">&quot;</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="st">export MY_VAR</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="st">echo &quot;</span>La variable MY_VAR est définie à: <span class="va">$MY_VAR</span><span class="st">&quot;</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="st">echo &quot;</span>Fin de l<span class="st">&#39;exécution du script.&quot;</span></span></code></pre></div>
+<p>Avec ces méthodes et considérations, vous êtes désormais équipé pour
+exécuter efficacement vos scripts shell, tout en adoptant de bonnes
+pratiques de développement.</p>

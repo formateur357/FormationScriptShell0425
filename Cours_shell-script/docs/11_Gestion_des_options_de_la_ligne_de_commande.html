@@ -1,0 +1,296 @@
+<h1 id="gestion-des-options-de-la-ligne-de-commande">Gestion des options
+de la ligne de commande</h1>
+<h2 id="table-des-matières">Table des matières</h2>
+<ol type="1">
+<li><a href="#1-introduction-aux-options">Introduction aux
+options</a></li>
+<li><a href="#2-concepts-de-base">Concepts de base</a></li>
+</ol>
+<ul>
+<li><a href="#21-options-et-arguments">Options et Arguments</a></li>
+<li><a href="#22-paramètres-positionnels">Paramètres
+positionnels</a></li>
+</ul>
+<ol start="3" type="1">
+<li><a href="#3-analyse-des-options-avec-getopts">Analyse des options
+avec getopts</a></li>
+</ol>
+<ul>
+<li><a href="#31-présentation-de-getopts">Présentation de
+getopts</a></li>
+</ul>
+<ol start="4" type="1">
+<li><a href="#4-traitement-des-options-longues">Traitement des Options
+Longues</a></li>
+</ol>
+<ul>
+<li><a href="#41-alternatives-à-getopts">Alternatives à getopts</a></li>
+</ul>
+<ol start="5" type="1">
+<li><a href="#5-gestion-derreurs-et-validation">Gestion d’erreurs et
+validation</a></li>
+</ol>
+<ul>
+<li><a href="#51-vérification-des-options">Vérification des
+Options</a></li>
+<li><a href="#52-bonnes-pratiques">Bonnes pratiques</a></li>
+</ul>
+<ol start="6" type="1">
+<li><a href="#6-exemple-de-script-complet">Exemple de script
+complet</a></li>
+<li><a href="#7-astuces-avancées">Astuces avancées</a></li>
+</ol>
+<ul>
+<li><a href="#71-combinaison-des-options">Combinaison des
+options</a></li>
+<li><a href="#72-priorité-des-options">Priorité des options</a></li>
+<li><a href="#73-documentation-et-aide">Documentation et aide</a></li>
+</ul>
+<h2 id="introduction-aux-options">1. Introduction aux options</h2>
+<p>Les options permettent aux utilisateurs de modifier le comportement
+d’un script lors de son exécution. Elles sont habituellement précédées
+d’un tiret simple (ex. -a) ou double (ex. –all) et permettent d’activer
+ou de désactiver des fonctionnalités spécifiques du script.</p>
+<h2 id="concepts-de-base">2. Concepts de base</h2>
+<h3 id="options-et-arguments">2.1 Options et Arguments</h3>
+<ul>
+<li><strong>Options</strong> : Ce sont des indicateurs qui précèdent
+souvent un tiret et servent à activer ou désactiver des fonctionnalités
+(ex. <code>-v</code> pour activer le mode verbeux).</li>
+<li><strong>Arguments</strong> : Ce sont des valeurs fournies aux
+options pour définir leur fonctionnement (ex.
+<code>-o output.txt</code>, où <code>output.txt</code> est l’argument
+associé).</li>
+</ul>
+<h3 id="paramètres-positionnels">2.2 Paramètres positionnels</h3>
+<p>Les paramètres qui ne sont pas précédés d’options sont appelés
+paramètres positionnels et sont accessibles via des variables comme
+<code>$1</code>, <code>$2</code>, etc. Leur ordre est crucial pour le
+traitement des informations dans le script.</p>
+<h2 id="analyse-des-options-avec-getopts">3. Analyse des options avec
+getopts</h2>
+<h3 id="présentation-de-getopts">3.1 Présentation de getopts</h3>
+<p>La commande <code>getopts</code> est une fonctionnalité intégrée des
+shells POSIX qui simplifie l’analyse des options dans un script. Voici
+quelques détails importants sur son utilisation :</p>
+<ul>
+<li><p>Traitement des options :</p>
+<ul>
+<li>Permet d’extraire automatiquement les options courtes (ex.
+<code>-v</code>) et, lorsqu’elles le requièrent, leurs arguments.</li>
+<li>Facilite la gestion des erreurs en permettant d’identifier les
+options manquantes d’un argument ou non reconnues.</li>
+</ul></li>
+<li><p>Syntaxe de base :</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">getopts</span> <span class="st">&quot;:a:b&quot;</span> <span class="va">opt</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="va">${opt}</span> <span class="kw">in</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">a</span> <span class="kw">)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      <span class="va">valeur_option_a</span><span class="op">=</span><span class="va">$OPTARG</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">b</span> <span class="kw">)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="va">flag_b</span><span class="op">=</span>1</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">\?</span> <span class="kw">)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      <span class="bu">echo</span> <span class="st">&quot;Option invalide : -</span><span class="va">$OPTARG</span><span class="st">&quot;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>      <span class="bu">exit</span> 1</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="ss">:</span> <span class="kw">)</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>      <span class="bu">echo</span> <span class="st">&quot;L&#39;option -</span><span class="va">$OPTARG</span><span class="st"> nécessite un argument.&quot;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>      <span class="bu">exit</span> 1</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">esac</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">shift</span> <span class="va">$((OPTIND</span> <span class="op">-</span> <span class="dv">1</span><span class="va">))</span></span></code></pre></div>
+<ul>
+<li>La chaîne <code>":a:b"</code> indique :
+<ul>
+<li><code>a</code> attend un argument (le deux-points après
+<code>a</code>).</li>
+<li><code>b</code> n’attend pas d’argument.</li>
+</ul></li>
+<li><code>$OPTARG</code> contient l’argument associé à une option si
+nécessaire.</li>
+<li><code>$OPTIND</code> indique la prochaine position dans la liste des
+arguments à analyser.</li>
+</ul></li>
+<li><p>Bonnes pratiques :</p>
+<ul>
+<li>Initialisez les variables associées aux options avant de commencer
+l’analyse.</li>
+<li>Utilisez <code>shift $((OPTIND - 1))</code> pour supprimer les
+options traitées, ce qui permet d’accéder aux paramètres positionnels
+restants.</li>
+</ul></li>
+</ul>
+<p>Cette méthode rend l’analyse des options plus structurée, améliore la
+lisibilité du script et aide à gérer efficacement les erreurs
+d’entrée.</p>
+<h2 id="traitement-des-options-longues">4. Traitement des Options
+Longues</h2>
+<h3 id="alternatives-à-getopts">4.1 Alternatives à getopts</h3>
+<p>Pour gérer les options longues comme <code>--verbose</code>, on peut
+utiliser la commande <code>getopt</code> ou des bibliothèques externes.
+Voici un exemple utilisant <code>getopt</code> :</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">TEMP</span><span class="op">=</span><span class="va">$(</span><span class="fu">getopt</span> <span class="at">-o</span> vo: <span class="at">--long</span> verbose,output: <span class="at">-n</span> <span class="st">&#39;script.sh&#39;</span> <span class="at">--</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span><span class="va">)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> set <span class="at">--</span> <span class="st">&quot;</span><span class="va">$TEMP</span><span class="st">&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="kw">in</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">--verbose</span><span class="kw">|</span><span class="ss">-v</span><span class="kw">)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      <span class="va">verbose</span><span class="op">=</span>1<span class="kw">;</span> <span class="bu">shift</span><span class="cf">;;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="ss">--output</span><span class="kw">|</span><span class="ss">-o</span><span class="kw">)</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="va">output_file</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$2</span><span class="st">&quot;</span><span class="kw">;</span> <span class="bu">shift</span> 2<span class="cf">;;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="ss">--</span><span class="kw">)</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      <span class="bu">shift</span><span class="kw">;</span> <span class="cf">break;;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="pp">*</span><span class="kw">)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      <span class="bu">echo</span> <span class="st">&quot;Option inconnue : </span><span class="va">$1</span><span class="st">&quot;</span> <span class="kw">;</span> <span class="bu">exit</span> 1 <span class="cf">;;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">esac</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Cet exemple montre comment obtenir une syntaxe plus explicite et
+flexible pour la gestion des options.</p>
+<h2 id="gestion-derreurs-et-validation">5. Gestion d’erreurs et
+validation</h2>
+<h3 id="vérification-des-options">5.1 Vérification des Options</h3>
+<ul>
+<li>Affichez des messages d’erreur précis en cas d’option invalide.</li>
+<li>Fournissez un message d’aide (option <code>-h</code> ou
+<code>--help</code>) pour guider l’utilisateur sur l’utilisation
+correcte du script.</li>
+</ul>
+<h3 id="bonnes-pratiques">5.2 Bonnes pratiques</h3>
+<ul>
+<li>Vérifiez systématiquement la validité des arguments.</li>
+<li>Documentez clairement chaque option dans le script pour faciliter sa
+compréhension.</li>
+<li>Centralisez la gestion des erreurs afin d’améliorer la
+maintenabilité du code.</li>
+</ul>
+<h2 id="exemple-de-script-complet">6. Exemple de script complet</h2>
+<p>Voici un exemple complet d’un script utilisant getopts pour l’analyse
+des options :</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialisation des variables</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="va">verbose</span><span class="op">=</span>0</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="va">output_file</span><span class="op">=</span><span class="st">&quot;&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fonction d&#39;affichage de l&#39;aide</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">usage()</span> <span class="kw">{</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Usage: </span><span class="va">$0</span><span class="st"> [-v] [-o fichier] [arguments]&quot;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 1</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyse des options</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">getopts</span> <span class="st">&quot;:vo:h&quot;</span> <span class="va">opt</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="va">${opt}</span> <span class="kw">in</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="ss">v</span> <span class="kw">)</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>      <span class="va">verbose</span><span class="op">=</span>1</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="ss">o</span> <span class="kw">)</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>      <span class="va">output_file</span><span class="op">=</span><span class="va">$OPTARG</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="ss">h</span> <span class="kw">)</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>      <span class="ex">usage</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="dt">\?</span> <span class="kw">)</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>      <span class="bu">echo</span> <span class="st">&quot;Option invalide : -</span><span class="va">$OPTARG</span><span class="st">&quot;</span> <span class="dv">1</span><span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>      <span class="ex">usage</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="ss">:</span> <span class="kw">)</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>      <span class="bu">echo</span> <span class="st">&quot;L&#39;option -</span><span class="va">$OPTARG</span><span class="st"> nécessite un argument.&quot;</span> <span class="dv">1</span><span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>      <span class="ex">usage</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">esac</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="bu">shift</span> <span class="va">$((OPTIND</span> <span class="op">-</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Exécution du script en fonction des options</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$verbose</span> <span class="ot">-eq</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Mode verbeux activé.&quot;</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-n</span> <span class="st">&quot;</span><span class="va">$output_file</span><span class="st">&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Fichier de sortie : </span><span class="va">$output_file</span><span class="st">&quot;</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Arguments restants : </span><span class="va">$@</span><span class="st">&quot;</span></span></code></pre></div>
+<h2 id="astuces-avancées">7. Astuces avancées</h2>
+<h3 id="combinaison-des-options">7.1 Combinaison des options</h3>
+<p>Pour les options qui ne requièrent pas d’argument, vous pouvez les
+combiner afin de rendre l’appel du script plus concis. Par exemple, au
+lieu d’exécuter :</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">script.sh</span> <span class="at">-a</span> <span class="at">-b</span> <span class="at">-c</span></span></code></pre></div>
+<p>Vous pouvez combiner ces options en une seule séquence :</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">script.sh</span> <span class="at">-abc</span></span></code></pre></div>
+<p>Si une option nécessite un argument, veillez à la placer à la bonne
+position ou à l’exprimer séparément. Par exemple :</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">script.sh</span> <span class="at">-ab</span> <span class="at">-c</span> valeur</span></code></pre></div>
+<p>Ici, les options -a et -b sont combinées tandis que -c attend un
+argument.</p>
+<h3 id="priorité-des-options">7.2 Priorité des options</h3>
+<p>Il est recommandé de traiter toutes les options avant de gérer les
+paramètres positionnels afin d’éviter toute ambiguïté. Voici un exemple
+illustrant ce principe :</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="va">verbose</span><span class="op">=</span>0</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">getopts</span> <span class="st">&quot;v&quot;</span> <span class="va">opt</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="va">$opt</span> <span class="kw">in</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">v</span><span class="kw">)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      <span class="va">verbose</span><span class="op">=</span>1</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="pp">*</span><span class="kw">)</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">esac</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">shift</span> <span class="va">$((OPTIND</span> <span class="op">-</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Traitement des paramètres positionnels après les options</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> param <span class="kw">in</span> <span class="st">&quot;</span><span class="va">$@</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Paramètre : </span><span class="va">$param</span><span class="st">&quot;</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Dans cet exemple, une fois les options traitées, la commande shift
+permet de se concentrer sur les arguments restants.</p>
+<h3 id="documentation-et-aide">7.3 Documentation et aide</h3>
+<p>Inclure un message d’aide détaillé dans votre script peut faciliter
+son utilisation. Voici un exemple de fonction d’aide :</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">usage()</span> <span class="kw">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span> <span class="op">&lt;&lt;EOF</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">Usage: </span><span class="va">$0</span><span class="st"> [options] parametres</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st">Options:</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">  -v           Activer le mode verbeux</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">  -o fichier   Spécifier le fichier de sortie</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="st">  -h           Afficher ce message d&#39;aide</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="st">Exemple:</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="va">$0</span><span class="st"> -v -o sortie.txt fichier1 fichier2</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 1</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Exemple d&#39;utilisation dans le traitement des options</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">getopts</span> <span class="st">&quot;vo:h&quot;</span> <span class="va">opt</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="va">$opt</span> <span class="kw">in</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="ss">v</span><span class="kw">)</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      <span class="va">verbose</span><span class="op">=</span>1</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="ss">o</span><span class="kw">)</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>      <span class="va">output_file</span><span class="op">=</span><span class="va">$OPTARG</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="ss">h</span><span class="kw">)</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>      <span class="ex">usage</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="pp">*</span><span class="kw">)</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>      <span class="ex">usage</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>      <span class="cf">;;</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">esac</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Cette approche rend votre script plus convivial en permettant à
+l’utilisateur d’obtenir rapidement aide et documentation.</p>
