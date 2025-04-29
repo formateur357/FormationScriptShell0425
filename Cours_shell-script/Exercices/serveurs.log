@@ -1,0 +1,100 @@
+ERROR: 403 Redémarrage du service
+WARN: Connexion établie
+INFO: Erreur d'accès base de données
+WARN: Timeout de session
+DEBUG: Connexion établie
+DEBUG: Erreur d'accès base de données
+INFO: Erreur d'accès base de données
+INFO: Écriture sur disque réussie
+INFO: Mémoire insuffisante
+ERROR: 502 Écriture sur disque réussie
+INFO: Fichier introuvable
+WARN: Utilisateur authentifié
+DEBUG: Timeout de session
+DEBUG: Utilisateur authentifié
+DEBUG: Écriture sur disque réussie
+INFO: Écriture sur disque réussie
+WARN: Fichier introuvable
+DEBUG: Fichier introuvable
+INFO: Fichier introuvable
+ERROR: 403 Mémoire insuffisante
+DEBUG: Connexion refusée
+DEBUG: Redémarrage du service
+WARN: Écriture sur disque réussie
+WARN: Mémoire insuffisante
+INFO: Mémoire insuffisante
+WARN: Mémoire insuffisante
+INFO: Utilisateur authentifié
+ERROR: 500 Mémoire insuffisante
+WARN: Connexion refusée
+ERROR: 403 Erreur d'accès base de données
+ERROR: 403 Permission refusée
+WARN: Connexion refusée
+WARN: Erreur d'accès base de données
+INFO: Connexion refusée
+ERROR: 404 Utilisateur authentifié
+ERROR: 500 Connexion établie
+DEBUG: Permission refusée
+ERROR: 404 Écriture sur disque réussie
+ERROR: 502 Fichier introuvable
+WARN: Permission refusée
+ERROR: 502 Connexion refusée
+WARN: Mémoire insuffisante
+INFO: Redémarrage du service
+WARN: Utilisateur authentifié
+DEBUG: Timeout de session
+WARN: Utilisateur authentifié
+WARN: Timeout de session
+ERROR: 404 Fichier introuvable
+WARN: Redémarrage du service
+WARN: Fichier introuvable
+WARN: Mémoire insuffisante
+DEBUG: Permission refusée
+DEBUG: Mémoire insuffisante
+WARN: Utilisateur authentifié
+INFO: Mémoire insuffisante
+ERROR: 500 Connexion refusée
+DEBUG: Connexion refusée
+WARN: Utilisateur authentifié
+WARN: Redémarrage du service
+INFO: Timeout de session
+WARN: Connexion refusée
+DEBUG: Permission refusée
+WARN: Connexion refusée
+WARN: Écriture sur disque réussie
+ERROR: 404 Timeout de session
+ERROR: 502 Erreur d'accès base de données
+DEBUG: Mémoire insuffisante
+ERROR: 403 Écriture sur disque réussie
+WARN: Utilisateur authentifié
+ERROR: 403 Utilisateur authentifié
+DEBUG: Permission refusée
+WARN: Redémarrage du service
+ERROR: 500 Utilisateur authentifié
+WARN: Timeout de session
+DEBUG: Timeout de session
+DEBUG: Connexion établie
+INFO: Permission refusée
+WARN: Mémoire insuffisante
+ERROR: 502 Mémoire insuffisante
+WARN: Fichier introuvable
+WARN: Redémarrage du service
+ERROR: 500 Utilisateur authentifié
+WARN: Connexion refusée
+INFO: Redémarrage du service
+ERROR: 502 Timeout de session
+ERROR: 404 Utilisateur authentifié
+WARN: Connexion établie
+ERROR: 404 Connexion refusée
+DEBUG: Connexion établie
+WARN: Erreur d'accès base de données
+ERROR: 502 Utilisateur authentifié
+ERROR: 404 Connexion établie
+DEBUG: Écriture sur disque réussie
+INFO: Écriture sur disque réussie
+WARN: Mémoire insuffisante
+DEBUG: Écriture sur disque réussie
+INFO: Mémoire insuffisante
+DEBUG: Connexion refusée
+ERROR: 403 Utilisateur authentifié
+INFO: Timeout de session
