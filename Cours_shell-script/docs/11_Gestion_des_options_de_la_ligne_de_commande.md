@@ -42,15 +42,18 @@ La commande `getopts` est une fonctionnalité intégrée des shells POSIX qui si
   - Permet d'extraire automatiquement les options courtes (ex. `-v`) et, lorsqu’elles le requièrent, leurs arguments.
   - Facilite la gestion des erreurs en permettant d'identifier les options manquantes d'un argument ou non reconnues.
 
-- Syntaxe de base :
+- Syntaxe de base : ./programme -l 100 -v -a red 1 2999
   ```bash
-  while getopts ":a:b" opt; do
+  while getopts ":l:va:" opt; do
     case ${opt} in
-      a )
+      l )
         valeur_option_a=$OPTARG
         ;;
-      b )
+      v )
         flag_b=1
+        ;;
+      a )
+        valeur_option_c=$OPTARG
         ;;
       \? )
         echo "Option invalide : -$OPTARG" >&2
@@ -82,6 +85,7 @@ Cette méthode rend l'analyse des options plus structurée, améliore la lisibil
 Pour gérer les options longues comme `--verbose`, on peut utiliser la commande `getopt` ou des bibliothèques externes. Voici un exemple utilisant `getopt` :
 ```bash
 TEMP=$(getopt -o vo: --long verbose,output: -n 'script.sh' -- "$@")
+# -v --output -- -fichier1 fichier2
 eval set -- "$TEMP"
 while true; do
   case "$1" in
@@ -122,7 +126,7 @@ output_file=""
 # Fonction d'affichage de l'aide
 usage() {
   echo "Usage: $0 [-v] [-o fichier] [arguments]"
-  exit 1
+  exit 0
 }
 
 # Analyse des options
