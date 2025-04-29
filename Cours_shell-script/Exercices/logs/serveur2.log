@@ -1,0 +1,102 @@
+2024-01-01 12:21:24 TRACE: Accès refusé
+2024-01-01 12:52:35 WARN: Session expirée
+2024-01-01 12:11:03 TRACE: Erreur base de données
+2024-01-01 12:31:01 WARN: Timeout utilisateur
+2024-01-01 12:19:46 INFO: Connexion réussie
+2024-01-01 12:53:32 DEBUG: Connexion réussie
+2024-01-01 12:25:45 WARN: Session expirée
+2024-01-01 12:44:36 ERROR: [404] Mémoire saturée
+2024-01-01 12:05:11 TRACE: Connexion réussie
+2024-01-01 12:14:50 FATAL: [404] Processus terminé
+2024-01-01 12:49:25 ERROR: [503] Connexion réussie
+2024-01-01 12:06:16 INFO: Connexion réussie
+2024-01-01 12:41:31 ERROR: [404] Accès refusé
+2024-01-01 12:36:58 WARN: Session expirée
+2024-01-01 12:44:51 ERROR: [403] Accès refusé
+2024-01-01 12:35:59 INFO: Erreur base de données
+2024-01-01 12:31:56 DEBUG: Connexion réussie
+2024-01-01 12:59:55 INFO: Session expirée
+2024-01-01 12:30:05 ERROR: [404] Session expirée
+2024-01-01 12:47:31 WARN: Service indisponible
+2024-01-01 12:07:35 INFO: Service indisponible
+2024-01-01 12:51:25 TRACE: Service indisponible
+2024-01-01 12:35:02 INFO: Processus terminé
+2024-01-01 12:29:55 DEBUG: Session expirée
+2024-01-01 12:22:00 FATAL: [503] Fichier introuvable
+2024-01-01 12:47:53 INFO: Session expirée
+2024-01-01 12:47:44 ERROR: [500] Session expirée
+2024-01-01 12:09:44 TRACE: Mémoire saturée
+2024-01-01 12:33:26 INFO: Fichier introuvable
+2024-01-01 12:26:44 FATAL: [404] Fichier introuvable
+2024-01-01 12:52:48 FATAL: [503] Timeout utilisateur
+2024-01-01 12:34:49 WARN: Mémoire saturée
+2024-01-01 12:59:25 ERROR: [401] Timeout utilisateur
+2024-01-01 12:01:01 WARN: Fichier introuvable
+2024-01-01 12:27:56 DEBUG: Processus terminé
+
+2024-01-01 12:57:05 TRACE: Session expirée
+2024-01-01 12:37:37 ERROR: [500] Timeout utilisateur
+2024-01-01 12:57:48 ERROR: [404] Timeout utilisateur
+2024-01-01 12:10:06 FATAL: [404] Connexion réussie
+2024-01-01 12:07:24 DEBUG: Processus terminé
+2024-01-01 12:46:26 ERROR: [502] Accès refusé
+2024-01-01 12:37:47 DEBUG: Processus terminé
+2024-01-01 12:20:20 ERROR: [404] Erreur base de données
+
+2024-01-01 12:37:27 WARN: Processus terminé
+2024-01-01 12:56:36 ERROR: [404] Erreur base de données
+2024-01-01 12:59:19 INFO: Fichier introuvable
+2024-01-01 12:52:38 TRACE: Fichier introuvable
+2024-01-01 12:42:35 ERROR: [404] Connexion réussie
+2024-01-01 12:28:14 ERROR: [503] Session expirée
+2024-01-01 12:56:28 INFO: Erreur base de données
+2024-01-01 12:01:10 ERROR: [503] Session expirée
+2024-01-01 12:04:24 INFO: Erreur base de données
+2024-01-01 12:18:22 TRACE: Accès refusé
+2024-01-01 12:19:52 INFO: Timeout utilisateur
+2024-01-01 12:54:13 WARN: Processus terminé
+2024-01-01 12:05:19 FATAL: [401] Service indisponible
+2024-01-01 12:28:39 FATAL: [503] Fichier introuvable
+2024-01-01 12:48:15 TRACE: Accès refusé
+2024-01-01 12:06:57 WARN: Processus terminé
+2024-01-01 12:45:37 TRACE: Session expirée
+2024-01-01 12:13:53 INFO: Service indisponible
+2024-01-01 12:48:19 FATAL: [503] Erreur base de données
+2024-01-01 12:19:48 DEBUG: Timeout utilisateur
+2024-01-01 12:59:39 DEBUG: Erreur base de données
+2024-01-01 12:07:30 WARN: Fichier introuvable
+2024-01-01 12:00:28 INFO: Erreur base de données
+2024-01-01 12:51:27 TRACE: Timeout utilisateur
+2024-01-01 12:37:59 TRACE: Processus terminé
+2024-01-01 12:35:10 WARN: Session expirée
+2024-01-01 12:27:24 TRACE: Fichier introuvable
+2024-01-01 12:45:55 DEBUG: Erreur base de données
+2024-01-01 12:43:54 FATAL: [403] Session expirée
+2024-01-01 12:07:38 FATAL: [401] Session expirée
+2024-01-01 12:21:30 FATAL: [401] Fichier introuvable
+2024-01-01 12:45:12 DEBUG: Erreur base de données
+2024-01-01 12:42:13 WARN: Service indisponible
+2024-01-01 12:33:50 FATAL: [404] Timeout utilisateur
+2024-01-01 12:06:56 ERROR: [403] Service indisponible
+2024-01-01 12:51:14 FATAL: [502] Connexion réussie
+2024-01-01 12:32:51 WARN: Erreur base de données
+2024-01-01 12:53:57 ERROR: [503] Session expirée
+2024-01-01 12:09:01 INFO: Mémoire saturée
+2024-01-01 12:29:09 ERROR: [404] Erreur base de données
+2024-01-01 12:10:50 ERROR: [500] Processus terminé
+2024-01-01 12:57:49 FATAL: [403] Mémoire saturée
+2024-01-01 12:08:28 ERROR: [502] Processus terminé
+2024-01-01 12:43:57 WARN: Fichier introuvable
+2024-01-01 12:22:26 ERROR: [500] Service indisponible
+2024-01-01 12:24:57 INFO: Fichier introuvable
+2024-01-01 12:52:20 WARN: Erreur base de données
+2024-01-01 12:51:19 INFO: Erreur base de données
+2024-01-01 12:41:50 FATAL: [502] Processus terminé
+2024-01-01 12:44:32 WARN: Service indisponible
+2024-01-01 12:36:10 TRACE: Erreur base de données
+2024-01-01 12:46:14 DEBUG: Erreur base de données
+2024-01-01 12:00:02 DEBUG: Session expirée
+2024-01-01 12:05:08 DEBUG: Mémoire saturée
+2024-01-01 12:16:19 DEBUG: Timeout utilisateur
+2024-01-01 12:04:24 INFO: Session expirée
+2024-01-01 12:00:13 WARN: Processus terminé
